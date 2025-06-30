@@ -18,7 +18,6 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    // Prevent background scrolling when menu is open
     document.body.style.overflow = !isMenuOpen ? 'hidden' : '';
   };
 
@@ -28,7 +27,21 @@ const Navbar = () => {
       behavior: 'smooth'
     });
     
-    // Close mobile menu if open
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+      document.body.style.overflow = '';
+    }
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+    
     if (isMenuOpen) {
       setIsMenuOpen(false);
       document.body.style.overflow = '';
@@ -40,44 +53,56 @@ const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 py-2 sm:py-3 md:py-4 transition-all duration-300",
         isScrolled 
-          ? "bg-white/80 backdrop-blur-md shadow-sm" 
-          : "bg-transparent"
+          ? "bg-white/95 backdrop-blur-md shadow-sm" 
+          : "bg-white/80 backdrop-blur-sm"
       )}
     >
       <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a 
-          href="#" 
-          className="flex items-center space-x-2"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToTop();
-          }}
-          aria-label="Pulse Robot"
+        <button 
+          onClick={scrollToTop}
+          className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+          aria-label="Ai due leoni"
         >
-          <img 
-            src="/logo.svg" 
-            alt="Pulse Robot Logo" 
-            className="h-7 sm:h-8" 
-          />
-        </a>
+          <span className="text-xl sm:text-2xl font-bold text-amber-600">
+            🦁 Ai due leoni
+          </span>
+        </button>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
-          <a 
-            href="#" 
-            className="nav-link"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToTop();
-            }}
+          <button 
+            onClick={scrollToTop}
+            className="nav-link text-gray-800 hover:text-amber-600 py-2 transition-colors duration-300"
           >
             Home
-          </a>
-          <a href="#features" className="nav-link">About</a>
-          <a href="#details" className="nav-link">Contact</a>
+          </button>
+          <button 
+            onClick={() => scrollToSection('appartamento')}
+            className="nav-link text-gray-800 hover:text-amber-600 py-2 transition-colors duration-300"
+          >
+            Appartamento
+          </button>
+          <button 
+            onClick={() => scrollToSection('chi-siamo')}
+            className="nav-link text-gray-800 hover:text-amber-600 py-2 transition-colors duration-300"
+          >
+            Chi Siamo
+          </button>
+          <button 
+            onClick={() => scrollToSection('dove-ci-troviamo')}
+            className="nav-link text-gray-800 hover:text-amber-600 py-2 transition-colors duration-300"
+          >
+            Dove Siamo
+          </button>
+          <button 
+            onClick={() => scrollToSection('contatti')}
+            className="nav-link text-gray-800 hover:text-amber-600 py-2 transition-colors duration-300"
+          >
+            Contatti
+          </button>
         </nav>
 
-        {/* Mobile menu button - increased touch target */}
+        {/* Mobile menu button */}
         <button 
           className="md:hidden text-gray-700 p-3 focus:outline-none" 
           onClick={toggleMenu}
@@ -87,44 +112,42 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Navigation - improved for better touch experience */}
+      {/* Mobile Navigation */}
       <div className={cn(
         "fixed inset-0 z-40 bg-white flex flex-col pt-16 px-6 md:hidden transition-all duration-300 ease-in-out",
         isMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
       )}>
         <nav className="flex flex-col space-y-8 items-center mt-8">
-          <a 
-            href="#" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100" 
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToTop();
-              setIsMenuOpen(false);
-              document.body.style.overflow = '';
-            }}
+          <button 
+            onClick={scrollToTop}
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100"
           >
             Home
-          </a>
-          <a 
-            href="#features" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100" 
-            onClick={() => {
-              setIsMenuOpen(false);
-              document.body.style.overflow = '';
-            }}
+          </button>
+          <button 
+            onClick={() => scrollToSection('appartamento')}
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100"
           >
-            About
-          </a>
-          <a 
-            href="#details" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100" 
-            onClick={() => {
-              setIsMenuOpen(false);
-              document.body.style.overflow = '';
-            }}
+            Appartamento
+          </button>
+          <button 
+            onClick={() => scrollToSection('chi-siamo')}
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100"
           >
-            Contact
-          </a>
+            Chi Siamo
+          </button>
+          <button 
+            onClick={() => scrollToSection('dove-ci-troviamo')}
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100"
+          >
+            Dove Siamo
+          </button>
+          <button 
+            onClick={() => scrollToSection('contatti')}
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100"
+          >
+            Contatti
+          </button>
         </nav>
       </div>
     </header>

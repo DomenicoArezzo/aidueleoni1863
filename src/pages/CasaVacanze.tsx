@@ -1,0 +1,27 @@
+
+import React from "react";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/casa-vacanze/HeroSection";
+import AppartamentoSection from "@/components/casa-vacanze/AppartamentoSection";
+import ChiSiamoSection from "@/components/casa-vacanze/ChiSiamoSection";
+import DovetroviamoSection from "@/components/casa-vacanze/DovetroviamoSection";
+import ContattiSection from "@/components/casa-vacanze/ContattiSection";
+import Footer from "@/components/Footer";
+
+const CasaVacanze = () => {
+  return (
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <main>
+        <HeroSection />
+        <AppartamentoSection />
+        <ChiSiamoSection />
+        <DovetroviamoSection />
+        <ContattiSection />
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default CasaVacanze;
