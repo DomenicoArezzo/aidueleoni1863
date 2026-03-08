@@ -54,7 +54,7 @@ const HeroSection = () => {
           </a>
           <a 
             href="#contatti" 
-            className="bg-transparent border-2 border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 text-lg"
+            className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-semibold py-4 px-8 rounded-full transition-all duration-300 text-lg"
           >
             Prenota Ora
           </a>
