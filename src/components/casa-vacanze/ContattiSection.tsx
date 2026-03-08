@@ -141,7 +141,7 @@ const ContattiSection = () => {
                 {[[t(c.bassa, lang), "€80"], [t(c.media, lang), "€100"], [t(c.alta, lang), "€120"]].map(([label, price], i) => (
                   <div key={i} className="flex justify-between items-center pb-3 border-b border-white/20">
                     <span>{label}</span>
-                    <span className="font-bold">{price}/{lang === "en" ? "night" : lang === "es" ? "noche" : "notte"}</span>
+                    <span className="font-bold">{price}/{lang === "en" ? "night" : lang === "es" ? "noche" : lang === "de" ? "Nacht" : "notte"}</span>
                   </div>
                 ))}
                 <p className="text-sm opacity-90 mt-4">{t(c.tariffeNote, lang)}</p>
