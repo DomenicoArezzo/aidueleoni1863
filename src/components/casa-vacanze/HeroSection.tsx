@@ -12,6 +12,7 @@ const HeroSection = () => {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
         src="/castiglione.mp4"
+        aria-label="Video panoramico della zona di Ragusa e della Sicilia orientale"
       />
       {/* Subtle gradient overlay — darker at bottom for text, transparent at top to showcase video */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
