@@ -20,6 +20,7 @@ const App = () => (
           <Route path="/" element={<CasaVacanze lang="it" />} />
           <Route path="/en" element={<CasaVacanze lang="en" />} />
           <Route path="/es" element={<CasaVacanze lang="es" />} />
+          <Route path="/de" element={<CasaVacanze lang="de" />} />
           <Route path="/pulse-robot" element={<Index />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

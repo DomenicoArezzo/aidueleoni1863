@@ -12,8 +12,8 @@ interface NavItem {
   children?: { label: string; sectionId: string; description?: string }[];
 }
 
-const langLabels: Record<Lang, string> = { it: "Italiano", en: "English", es: "Español" };
-const langPaths: Record<Lang, string> = { it: "/", en: "/en", es: "/es" };
+const langLabels: Record<Lang, string> = { it: "Italiano", en: "English", es: "Español", de: "Deutsch" };
+const langPaths: Record<Lang, string> = { it: "/", en: "/en", es: "/es", de: "/de" };
 
 const Navbar = () => {
   const lang = useLang();
