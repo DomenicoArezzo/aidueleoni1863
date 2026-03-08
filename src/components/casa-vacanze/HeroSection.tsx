@@ -17,10 +17,10 @@ const HeroSection = () => {
       
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <div className="mb-8">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg">
             Ai due leoni
           </h1>
-          <p className="text-xl sm:text-2xl text-gray-700 mb-8">
+          <p className="text-xl sm:text-2xl text-white/90 mb-8 drop-shadow-md">
             Casa Vacanze in Sicilia
           </p>
         </div>
