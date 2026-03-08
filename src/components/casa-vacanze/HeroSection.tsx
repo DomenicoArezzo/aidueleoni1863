@@ -4,8 +4,16 @@ import { MapPin, Star, Users, Bed } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-100 px-4 sm:px-6 lg:px-8">
-      <div className="absolute inset-0 bg-black/20"></div>
+    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/castiglione.mp4"
+      />
+      <div className="absolute inset-0 bg-black/40"></div>
       
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <div className="mb-8">
