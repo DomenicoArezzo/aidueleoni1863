@@ -4,15 +4,23 @@ import { MapPin, Star, Users, Bed } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-100 px-4 sm:px-6 lg:px-8">
-      <div className="absolute inset-0 bg-black/20"></div>
+    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/castiglione.mp4"
+      />
+      <div className="absolute inset-0 bg-black/40"></div>
       
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <div className="mb-8">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg">
             Ai due leoni
           </h1>
-          <p className="text-xl sm:text-2xl text-gray-700 mb-8">
+          <p className="text-xl sm:text-2xl text-white/90 mb-8 drop-shadow-md">
             Casa Vacanze in Sicilia
           </p>
         </div>
@@ -46,7 +54,7 @@ const HeroSection = () => {
           </a>
           <a 
             href="#contatti" 
-            className="bg-transparent border-2 border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 text-lg"
+            className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-semibold py-4 px-8 rounded-full transition-all duration-300 text-lg"
           >
             Prenota Ora
           </a>
