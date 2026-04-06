@@ -26,7 +26,7 @@ const translations = {
 };
 
 const PublicAvailabilityCalendar = () => {
-  const { lang } = useLang();
+  const lang = useLang();
   const [unavailable, setUnavailable] = useState<UnavailableRange[]>([]);
   const [loading, setLoading] = useState(true);
 
