@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Lock } from "lucide-react";
 
@@ -12,30 +12,49 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
+      if (isSignUp) {
+        // Sign up
+        const { data, error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+        if (!data.user) throw new Error("Registrazione fallita");
 
-      // Check if user has admin role
-      const { data: roleData } = await supabase.rpc("has_role", {
-        _user_id: data.user.id,
-        _role: "admin",
-      });
+        toast({ 
+          title: "Account creato!", 
+          description: "Ora accedi con le tue credenziali. Un amministratore dovrà abilitare il tuo accesso.",
+        });
+        setIsSignUp(false);
+      } else {
+        // Sign in
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
 
-      if (!roleData) {
-        await supabase.auth.signOut();
-        toast({ title: "Accesso negato", description: "Non hai i permessi di amministratore.", variant: "destructive" });
-        return;
+        // Check if user has admin role
+        const { data: roleData } = await supabase.rpc("has_role", {
+          _user_id: data.user.id,
+          _role: "admin",
+        });
+
+        if (!roleData) {
+          await supabase.auth.signOut();
+          toast({ 
+            title: "Accesso negato", 
+            description: "Non hai i permessi di amministratore. Contatta un admin.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        navigate("/admin/dashboard");
       }
-
-      navigate("/admin/dashboard");
     } catch (err: any) {
       toast({ title: "Errore", description: err.message, variant: "destructive" });
     } finally {
@@ -51,21 +70,33 @@ const AdminLogin = () => {
             <Lock className="w-6 h-6 text-primary" />
           </div>
           <CardTitle className="text-2xl font-display">Admin — Ai due leoni</CardTitle>
+          <CardDescription>
+            {isSignUp ? "Crea un nuovo account amministratore" : "Accedi alla dashboard"}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Accesso..." : "Accedi"}
+              {loading ? "Caricamento..." : isSignUp ? "Registrati" : "Accedi"}
             </Button>
           </form>
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm text-primary hover:underline"
+            >
+              {isSignUp ? "Hai già un account? Accedi" : "Non hai un account? Registrati"}
+            </button>
+          </div>
         </CardContent>
       </Card>
     </div>
