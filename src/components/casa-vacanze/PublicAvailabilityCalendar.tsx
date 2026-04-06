@@ -115,30 +115,30 @@ const PublicAvailabilityCalendar = () => {
   }, [bookedDateSet]);
 
   return (
-    <section id="disponibilita" className="py-20 sm:py-28 bg-gradient-to-b from-secondary/30 to-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="disponibilita" className="py-16 sm:py-20 bg-secondary/20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 text-sm font-medium mb-4">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 text-sm font-medium mb-3">
             <CalendarDays className="w-4 h-4" />
             {t(tr.title, lang)}
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 font-display">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 font-display">
             {t(tr.title, lang)}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base text-muted-foreground max-w-xl mx-auto">
             {t(tr.subtitle, lang)}
           </p>
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-16">
+          <div className="flex justify-center py-12">
             <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-            {/* Calendar */}
-            <div className="lg:col-span-3 bg-background rounded-3xl shadow-lg border p-6 sm:p-8">
+          <div className="space-y-5">
+            {/* Calendar card */}
+            <div className="bg-background rounded-2xl shadow-sm border p-4 sm:p-6">
               <Calendar
                 mode="range"
                 selected={selectedRange}
@@ -153,108 +153,86 @@ const PublicAvailabilityCalendar = () => {
               />
 
               {/* Legend */}
-              <div className="mt-6 pt-5 border-t flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+              <div className="mt-4 pt-4 border-t flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
                 <span className="flex items-center gap-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-primary/20 border-2 border-primary" />
+                  <span className="w-3 h-3 rounded-full border-2 border-primary bg-primary/20" />
                   {t(tr.today, lang)}
                 </span>
                 <span className="flex items-center gap-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-primary" />
+                  <span className="w-3 h-3 rounded-full bg-primary" />
                   {t(tr.free, lang)}
                 </span>
                 <span className="flex items-center gap-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-destructive/20 border-2 border-destructive/50" />
+                  <span className="w-3 h-3 rounded-full bg-destructive/30 border-2 border-destructive/60" />
                   {t(tr.booked, lang)}
                 </span>
               </div>
             </div>
 
-            {/* Sidebar - date summary & CTA */}
-            <div className="lg:col-span-2 space-y-5">
-              {/* Date selection card */}
-              <div className="bg-background rounded-3xl shadow-lg border p-6 space-y-5">
-                <h3 className="font-display font-semibold text-lg text-foreground">
-                  {t(tr.title, lang)}
-                </h3>
-
-                {/* Check-in / Check-out display */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-secondary/50 rounded-xl p-4 text-center">
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
-                      {t(tr.checkin, lang)}
-                    </p>
-                    <p className="font-semibold text-foreground text-sm">
-                      {selectedRange?.from ? formatDate(selectedRange.from) : t(tr.selectDate, lang)}
-                    </p>
-                  </div>
-                  <div className="bg-secondary/50 rounded-xl p-4 text-center">
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
-                      {t(tr.checkout, lang)}
-                    </p>
-                    <p className="font-semibold text-foreground text-sm">
-                      {selectedRange?.to ? formatDate(selectedRange.to) : t(tr.selectDate, lang)}
-                    </p>
-                  </div>
+            {/* Selection summary row */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* Check-in / Check-out */}
+              <div className="bg-background rounded-2xl shadow-sm border p-5 flex items-center gap-4">
+                <div className="flex-1 text-center">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                    {t(tr.checkin, lang)}
+                  </p>
+                  <p className="font-semibold text-foreground text-sm">
+                    {selectedRange?.from ? formatDate(selectedRange.from) : "—"}
+                  </p>
                 </div>
+                <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                <div className="flex-1 text-center">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                    {t(tr.checkout, lang)}
+                  </p>
+                  <p className="font-semibold text-foreground text-sm">
+                    {selectedRange?.to ? formatDate(selectedRange.to) : "—"}
+                  </p>
+                </div>
+              </div>
 
-                {/* Nights count */}
-                {nightsCount > 0 && (
-                  <div className="text-center py-2">
-                    <span className="text-3xl font-bold text-primary">{nightsCount}</span>
-                    <span className="text-muted-foreground ml-2 text-sm">
+              {/* Nights + availability */}
+              <div className="bg-background rounded-2xl shadow-sm border p-5 flex items-center justify-center">
+                {nightsCount > 0 ? (
+                  <div className="text-center">
+                    <span className="text-2xl font-bold text-primary">{nightsCount}</span>
+                    <span className="text-muted-foreground ml-1.5 text-sm">
                       {nightsCount === 1 ? t(tr.night, lang) : t(tr.nights, lang)}
                     </span>
+                    {isRangeAvailable !== null && (
+                      <p className={`text-xs mt-1 font-medium ${isRangeAvailable ? "text-green-600" : "text-destructive"}`}>
+                        {isRangeAvailable ? "✓ " + t(tr.available, lang) : "✗ " + t(tr.notAvailable, lang)}
+                      </p>
+                    )}
                   </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">{t(tr.selectDate, lang)}</p>
                 )}
+              </div>
 
-                {/* Availability result */}
-                {isRangeAvailable !== null && (
-                  <div className={`rounded-xl p-4 text-center text-sm font-medium ${
-                    isRangeAvailable
-                      ? "bg-green-50 text-green-700 border border-green-200"
-                      : "bg-destructive/10 text-destructive border border-destructive/20"
-                  }`}>
-                    {isRangeAvailable ? "✓ " + t(tr.available, lang) : "✗ " + t(tr.notAvailable, lang)}
-                  </div>
-                )}
-
-                {/* CTA Button */}
-                {isRangeAvailable && (
+              {/* CTA / Contact */}
+              <div className="bg-background rounded-2xl shadow-sm border p-5 flex flex-col items-center justify-center gap-3">
+                {isRangeAvailable ? (
                   <button
                     onClick={scrollToContatti}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98]"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98]"
                   >
                     {t(tr.requestBooking, lang)}
                     <ChevronRight className="w-4 h-4" />
                   </button>
-                )}
-              </div>
-
-              {/* Quick contact card */}
-              <div className="bg-background rounded-3xl shadow-lg border p-6">
-                <p className="text-sm text-muted-foreground mb-4 font-medium">
-                  {t(tr.callUs, lang)}
-                </p>
-                <div className="space-y-3">
-                  <a
-                    href="tel:+393331234567"
-                    className="flex items-center gap-3 text-foreground hover:text-primary transition-colors group"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <a href="tel:+393331234567" className="flex items-center gap-2 text-sm text-foreground hover:text-primary transition-colors">
                       <Phone className="w-4 h-4 text-primary" />
-                    </div>
-                    <span className="text-sm font-medium">+39 333 123 4567</span>
-                  </a>
-                  <a
-                    href="mailto:info@aidueleoni.com"
-                    className="flex items-center gap-3 text-foreground hover:text-primary transition-colors group"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                      <span>+39 333 123 4567</span>
+                    </a>
+                    <a href="mailto:info@aidueleoni.com" className="flex items-center gap-2 text-sm text-foreground hover:text-primary transition-colors">
                       <Mail className="w-4 h-4 text-primary" />
-                    </div>
-                    <span className="text-sm font-medium">info@aidueleoni.com</span>
-                  </a>
-                </div>
+                      <span>info@aidueleoni.com</span>
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
