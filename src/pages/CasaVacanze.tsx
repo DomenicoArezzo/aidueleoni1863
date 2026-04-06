@@ -23,11 +23,7 @@ const CasaVacanze = ({ lang = "it" }: CasaVacanzeProps) => {
         <main>
           <HeroSection />
           <AppartamentoSection />
-          <section id="disponibilita" className="py-16 sm:py-24 bg-white">
-            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-              <PublicAvailabilityCalendar />
-            </div>
-          </section>
+          <PublicAvailabilityCalendar />
           <ChiSiamoSection />
           <DovetroviamoSection />
           <ContattiSection />
