@@ -20,13 +20,15 @@ const CasaVacanze = ({ lang = "it" }: CasaVacanzeProps) => {
     <LangProvider lang={lang}>
       <div className="min-h-screen bg-white">
         <Navbar />
-        <main>
+        <main className="flex flex-col">
           <HeroSection />
-          <AppartamentoSection />
-          <PublicAvailabilityCalendar />
-          <ChiSiamoSection />
-          <DovetroviamoSection />
-          <ContattiSection />
+          <div className="flex flex-col">
+            <AppartamentoSection />
+            <PublicAvailabilityCalendar />
+            <ChiSiamoSection />
+            <DovetroviamoSection />
+            <ContattiSection />
+          </div>
         </main>
         <Footer />
       </div>

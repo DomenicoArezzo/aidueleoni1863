@@ -23,8 +23,8 @@ const AppartamentoSection = () => {
   const bullets = [a.bullets.cucina, a.bullets.camere, a.bullets.bagni, a.bullets.soggiorno];
 
   return (
-    <section id="appartamento" className="py-16 sm:py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="appartamento" className="py-10 sm:py-16 bg-white">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
             {t(a.title, lang)}
