@@ -21,6 +21,7 @@ const CasaVacanze = ({ lang = "it" }: CasaVacanzeProps) => {
     <LangProvider lang={lang}>
       <div className="min-h-screen bg-white">
         <Navbar />
+        <SidebarNav />
         <main className="flex flex-col">
           <HeroSection />
           <div className="flex flex-col">
