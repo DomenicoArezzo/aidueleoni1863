@@ -9,7 +9,7 @@ const HeroSection = () => {
   const h = translations.hero;
 
   return (
-    <section className="relative min-h-screen flex items-end pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-end pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
       <video
         autoPlay
         muted
