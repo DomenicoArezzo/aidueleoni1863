@@ -3,6 +3,9 @@ import React from "react";
 import { MapPin, Car, Plane, Clock, Coffee, ShoppingBag } from "lucide-react";
 import { useLang } from "@/hooks/use-lang";
 import { translations, t } from "@/lib/translations";
+import SectionBlock from "./ui/SectionBlock";
+import ContentCard from "./ui/ContentCard";
+import { Heading, BodyText, SectionHeader } from "./ui/Typography";
 
 const DovetroviamoSection = () => {
   const lang = useLang();
@@ -18,119 +21,110 @@ const DovetroviamoSection = () => {
   ];
 
   return (
-    <section id="dove-ci-troviamo" className="py-10 sm:py-16 bg-white">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{t(d.title, lang)}</h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">{t(d.subtitle, lang)}</p>
+    <SectionBlock id="dove-ci-troviamo" bg="white">
+      <SectionHeader title={t(d.title, lang)} subtitle={t(d.subtitle, lang)} />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+        <div>
+          <ContentCard variant="gradient" padding="lg" className="mb-6">
+            <div className="flex items-center gap-3 mb-6">
+              <MapPin className="w-8 h-8 text-primary" />
+              <Heading as="h3">{t(d.posizione, lang)}</Heading>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                <div>
+                  <span className="font-semibold text-foreground block">{t(d.indirizzo, lang)}</span>
+                  <BodyText muted>Via delle Medaglie d'Oro, Ragusa (RG)</BodyText>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                <div>
+                  <span className="font-semibold text-foreground block">{t(d.vicinoA, lang)}</span>
+                  <BodyText muted>{t(d.vicinoAVal, lang)}</BodyText>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                <div>
+                  <span className="font-semibold text-foreground block">{t(d.zona, lang)}</span>
+                  <BodyText muted>{t(d.zonaVal, lang)}</BodyText>
+                </div>
+              </div>
+            </div>
+          </ContentCard>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { icon: Car, label: t(d.parcheggio, lang), sub: t(d.gratuito, lang) },
+              { icon: ShoppingBag, label: t(d.shopping, lang), sub: "Ipercoop 2 min" },
+              { icon: Coffee, label: t(d.ristoranti, lang), sub: t(d.nelleVicinanze, lang) },
+            ].map(({ icon: Icon, label, sub }, i) => (
+              <ContentCard key={i} variant="default" className="text-center">
+                <Icon className="w-8 h-8 text-primary mx-auto mb-2" />
+                <span className="font-semibold text-foreground text-sm block">{label}</span>
+                <BodyText size="caption" muted>{sub}</BodyText>
+              </ContentCard>
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          <div>
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 mb-8">
-              <div className="flex items-center gap-3 mb-6">
-                <MapPin className="w-8 h-8 text-amber-600" />
-                <h3 className="text-2xl font-bold text-gray-900">{t(d.posizione, lang)}</h3>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-amber-600 rounded-full mt-2 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-gray-900">{t(d.indirizzo, lang)}</p>
-                    <p className="text-gray-600">Via delle Medaglie d'Oro, Ragusa (RG)</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-amber-600 rounded-full mt-2 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-gray-900">{t(d.vicinoA, lang)}</p>
-                    <p className="text-gray-600">{t(d.vicinoAVal, lang)}</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-amber-600 rounded-full mt-2 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-gray-900">{t(d.zona, lang)}</p>
-                    <p className="text-gray-600">{t(d.zonaVal, lang)}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-gray-50 rounded-2xl p-4 text-center">
-                <Car className="w-8 h-8 text-amber-600 mx-auto mb-2" />
-                <p className="font-semibold text-gray-900 text-sm">{t(d.parcheggio, lang)}</p>
-                <p className="text-xs text-gray-600">{t(d.gratuito, lang)}</p>
-              </div>
-              <div className="bg-gray-50 rounded-2xl p-4 text-center">
-                <ShoppingBag className="w-8 h-8 text-amber-600 mx-auto mb-2" />
-                <p className="font-semibold text-gray-900 text-sm">{t(d.shopping, lang)}</p>
-                <p className="text-xs text-gray-600">Ipercoop 2 min</p>
-              </div>
-              <div className="bg-gray-50 rounded-2xl p-4 text-center">
-                <Coffee className="w-8 h-8 text-amber-600 mx-auto mb-2" />
-                <p className="font-semibold text-gray-900 text-sm">{t(d.ristoranti, lang)}</p>
-                <p className="text-xs text-gray-600">{t(d.nelleVicinanze, lang)}</p>
-              </div>
-            </div>
+        <div>
+          <div className="flex items-center gap-3 mb-6">
+            <Clock className="w-6 h-6 text-primary" />
+            <Heading as="h3">{t(d.attrazioni, lang)}</Heading>
           </div>
+          <div className="space-y-3">
+            {attrazioni.map((att, index) => (
+              <ContentCard key={index} variant="default" padding="sm" className="hover:shadow-elegant transition-shadow duration-300">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <span className="font-semibold text-foreground block">{att.nome}</span>
+                    <BodyText size="caption" muted>{t(d.distanza, lang)}: {att.distanza}</BodyText>
+                  </div>
+                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">{att.tempo}</span>
+                </div>
+              </ContentCard>
+            ))}
+          </div>
+        </div>
+      </div>
 
+      <ContentCard variant="gradient" padding="lg" className="bg-gradient-to-r from-secondary to-accent">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-              <Clock className="w-6 h-6 text-amber-600" />
-              {t(d.attrazioni, lang)}
-            </h3>
+            <div className="flex items-center gap-3 mb-6">
+              <Plane className="w-8 h-8 text-primary" />
+              <Heading as="h3">{t(d.comeRaggiungerci, lang)}</Heading>
+            </div>
             <div className="space-y-4">
-              {attrazioni.map((att, index) => (
-                <div key={index} className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow duration-300">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{att.nome}</h4>
-                      <p className="text-sm text-gray-600">{t(d.distanza, lang)}: {att.distanza}</p>
-                    </div>
-                    <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">{att.tempo}</span>
+              {[
+                [t(d.aeroporto, lang), t(d.aeroportoVal, lang)],
+                [t(d.stazione, lang), t(d.stazioneVal, lang)],
+                [t(d.autostrada, lang), t(d.autostradaVal, lang)],
+              ].map(([title, desc], i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                  <div>
+                    <span className="font-semibold text-foreground block">{title}</span>
+                    <BodyText muted maxWidth>{desc}</BodyText>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-8 sm:p-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Plane className="w-8 h-8 text-blue-600" />
-                {t(d.comeRaggiungerci, lang)}
-              </h3>
-              <div className="space-y-4">
-                {[
-                  [t(d.aeroporto, lang), t(d.aeroportoVal, lang)],
-                  [t(d.stazione, lang), t(d.stazioneVal, lang)],
-                  [t(d.autostrada, lang), t(d.autostradaVal, lang)],
-                ].map(([title, desc], i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-gray-900">{title}</p>
-                      <p className="text-gray-600">{desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <ContentCard variant="elevated" padding="md">
+            <Heading as="h4" className="mb-4">{t(d.coordinate, lang)}</Heading>
+            <div className="bg-muted rounded-lg p-4 font-mono text-center">
+              <span className="text-foreground font-semibold">36.9281° N, 14.7351° E</span>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <h4 className="text-xl font-semibold text-gray-900 mb-4">{t(d.coordinate, lang)}</h4>
-              <div className="bg-gray-50 rounded-lg p-4 font-mono text-center">
-                <p className="text-gray-900 font-semibold">36.9281° N, 14.7351° E</p>
-              </div>
-              <p className="text-sm text-gray-600 mt-3 text-center">{t(d.coordinateHint, lang)}</p>
-            </div>
-          </div>
+            <BodyText size="caption" muted className="mt-3 text-center">{t(d.coordinateHint, lang)}</BodyText>
+          </ContentCard>
         </div>
-      </div>
-    </section>
+      </ContentCard>
+    </SectionBlock>
   );
 };
 
