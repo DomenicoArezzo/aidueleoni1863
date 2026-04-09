@@ -23,7 +23,7 @@ export const Heading = ({ as: Tag = "h2", children, className }: HeadingProps) =
 );
 
 interface BodyTextProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   size?: "body" | "lead" | "caption";
   muted?: boolean;
