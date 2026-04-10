@@ -4,12 +4,18 @@ import { cn } from "@/lib/utils";
 import { Menu, X, ChevronDown, Globe } from "lucide-react";
 import { useLang } from "@/hooks/use-lang";
 import { translations, t, type Lang } from "@/lib/translations";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
+interface NavChild {
+  label: string;
+  path: Record<Lang, string>;
+  description?: string;
+}
 
 interface NavItem {
   label: string;
-  sectionId?: string;
-  children?: { label: string; sectionId: string; description?: string }[];
+  path?: Record<Lang, string>;
+  children?: NavChild[];
 }
 
 const langLabels: Record<Lang, string> = { it: "Italiano", en: "English", es: "Español", de: "Deutsch" };
@@ -18,19 +24,20 @@ const langPaths: Record<Lang, string> = { it: "/", en: "/en", es: "/es", de: "/d
 const Navbar = () => {
   const lang = useLang();
   const navigate = useNavigate();
+  const location = useLocation();
   const n = translations.nav;
 
   const navItems: NavItem[] = [
-    { label: t(n.home, lang) },
+    { label: t(n.home, lang), path: { it: "/", en: "/en", es: "/es", de: "/de" } },
     {
       label: t(n.laStruttura, lang),
       children: [
-        { label: t(n.appartamento, lang), sectionId: "appartamento", description: t(n.appartamentoDesc, lang) },
-        { label: t(n.chiSiamo, lang), sectionId: "chi-siamo", description: t(n.chiSiamoDesc, lang) },
+        { label: t(n.appartamento, lang), path: { it: "/appartamento", en: "/en/apartment", es: "/es/apartamento", de: "/de/wohnung" }, description: t(n.appartamentoDesc, lang) },
+        { label: t(n.chiSiamo, lang), path: { it: "/chi-siamo", en: "/en/about", es: "/es/quienes-somos", de: "/de/ueber-uns" }, description: t(n.chiSiamoDesc, lang) },
       ],
     },
-    { label: t(n.doveSiamo, lang), sectionId: "dove-ci-troviamo" },
-    { label: t(n.contatti, lang), sectionId: "contatti" },
+    { label: t(n.doveSiamo, lang), path: { it: "/dove-siamo", en: "/en/location", es: "/es/ubicacion", de: "/de/lage" } },
+    { label: t(n.contatti, lang), path: { it: "/contatti", en: "/en/contact", es: "/es/contacto", de: "/de/kontakt" } },
   ];
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -59,16 +66,15 @@ const Navbar = () => {
     document.body.style.overflow = "";
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    closeMenu();
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  const goTo = (path: Record<Lang, string>) => {
+    navigate(path[lang] || path.it);
     closeMenu();
     setOpenDropdown(null);
+  };
+
+  const goHome = () => {
+    navigate(langPaths[lang]);
+    closeMenu();
   };
 
   const handleDropdownEnter = (label: string) => {
@@ -93,6 +99,9 @@ const Navbar = () => {
     navigate(langPaths[targetLang]);
   };
 
+  const isActive = (path?: Record<Lang, string>) =>
+    path ? location.pathname === (path[lang] || path.it) : false;
+
   const textColor = isScrolled ? "text-gray-800" : "text-white";
   const hoverColor = isScrolled ? "hover:text-amber-600" : "hover:text-white/70";
   const logoColor = isScrolled ? "text-amber-700" : "text-white";
@@ -106,7 +115,7 @@ const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
-        <button onClick={scrollToTop} className={cn("flex items-center gap-2 transition-colors duration-300", logoColor)} aria-label="Ai due leoni">
+        <button onClick={goHome} className={cn("flex items-center gap-2 transition-colors duration-300", logoColor)} aria-label="Ai due leoni">
           <span className="text-xl sm:text-2xl font-light tracking-wide" style={{ fontFamily: "'Georgia', serif" }}>Ai due leoni</span>
         </button>
 
@@ -123,15 +132,15 @@ const Navbar = () => {
                   onMouseEnter={() => handleDropdownEnter(item.label)} onMouseLeave={handleDropdownLeave}
                 >
                   {item.children.map((child) => (
-                    <button key={child.sectionId} onClick={() => scrollToSection(child.sectionId)} className="w-full text-left px-5 py-3.5 hover:bg-amber-50 transition-colors duration-200 group">
-                      <span className="block text-sm font-medium text-gray-900 group-hover:text-amber-700 transition-colors">{child.label}</span>
+                    <button key={child.path.it} onClick={() => goTo(child.path)} className={cn("w-full text-left px-5 py-3.5 hover:bg-amber-50 transition-colors duration-200 group", isActive(child.path) && "bg-amber-50")}>
+                      <span className={cn("block text-sm font-medium transition-colors", isActive(child.path) ? "text-amber-700" : "text-gray-900 group-hover:text-amber-700")}>{child.label}</span>
                       {child.description && <span className="block text-xs text-gray-400 mt-0.5">{child.description}</span>}
                     </button>
                   ))}
                 </div>
               </div>
             ) : (
-              <button key={item.label} onClick={item.sectionId ? () => scrollToSection(item.sectionId!) : scrollToTop} className={cn("px-4 py-2 text-sm tracking-wide transition-colors duration-300 rounded-md", textColor, hoverColor)}>
+              <button key={item.label} onClick={() => item.path ? goTo(item.path) : goHome()} className={cn("px-4 py-2 text-sm tracking-wide transition-colors duration-300 rounded-md", textColor, hoverColor, isActive(item.path) && "font-semibold")}>
                 {item.label}
               </button>
             )
@@ -154,7 +163,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <button onClick={() => scrollToSection("contatti")} className="ml-3 px-5 py-2 text-sm font-medium bg-amber-600 text-white rounded-full hover:bg-amber-700 transition-colors duration-300">
+          <button onClick={() => goTo({ it: "/contatti", en: "/en/contact", es: "/es/contacto", de: "/de/kontakt" })} className="ml-3 px-5 py-2 text-sm font-medium bg-amber-600 text-white rounded-full hover:bg-amber-700 transition-colors duration-300">
             {t(n.prenota, lang)}
           </button>
         </nav>
@@ -176,7 +185,7 @@ const Navbar = () => {
                 </button>
                 <div className={cn("overflow-hidden transition-all duration-200", mobileExpanded === item.label ? "max-h-96" : "max-h-0")}>
                   {item.children.map((child) => (
-                    <button key={child.sectionId} onClick={() => scrollToSection(child.sectionId)} className="w-full text-left pl-8 pr-4 py-3 text-base text-gray-600 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-colors">
+                    <button key={child.path.it} onClick={() => goTo(child.path)} className={cn("w-full text-left pl-8 pr-4 py-3 text-base rounded-lg transition-colors", isActive(child.path) ? "text-amber-700 bg-amber-50 font-medium" : "text-gray-600 hover:text-amber-700 hover:bg-amber-50")}>
                       {child.label}
                       {child.description && <span className="block text-xs text-gray-400 mt-0.5">{child.description}</span>}
                     </button>
@@ -184,7 +193,7 @@ const Navbar = () => {
                 </div>
               </div>
             ) : (
-              <button key={item.label} onClick={item.sectionId ? () => scrollToSection(item.sectionId!) : scrollToTop} className="text-lg font-light py-4 px-4 w-full text-left rounded-lg hover:bg-gray-50 transition-colors">
+              <button key={item.label} onClick={() => item.path ? goTo(item.path) : goHome()} className={cn("text-lg font-light py-4 px-4 w-full text-left rounded-lg hover:bg-gray-50 transition-colors", isActive(item.path) && "text-amber-700 font-medium")}>
                 {item.label}
               </button>
             )
@@ -203,7 +212,7 @@ const Navbar = () => {
         </nav>
 
         <div className="mt-auto pb-8">
-          <button onClick={() => scrollToSection("contatti")} className="w-full py-4 bg-amber-600 text-white font-medium rounded-full text-lg hover:bg-amber-700 transition-colors">
+          <button onClick={() => goTo({ it: "/contatti", en: "/en/contact", es: "/es/contacto", de: "/de/kontakt" })} className="w-full py-4 bg-amber-600 text-white font-medium rounded-full text-lg hover:bg-amber-700 transition-colors">
             {t(n.prenotaSoggiorno, lang)}
           </button>
         </div>
