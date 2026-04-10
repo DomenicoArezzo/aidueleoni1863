@@ -53,13 +53,13 @@ const HeroSection = () => {
 
         <div className="flex flex-col sm:flex-row gap-4">
           <a
-            href="#appartamento"
+            href={lang === "it" ? "/appartamento" : `/${lang}/${lang === "en" ? "apartment" : lang === "es" ? "apartamento" : "wohnung"}`}
             className="inline-flex items-center justify-center bg-white text-gray-900 font-medium py-3.5 px-8 rounded-full text-base hover:bg-white/90 transition-colors duration-300 shadow-lg"
           >
             {t(h.scopri, lang)}
           </a>
           <a
-            href="#contatti"
+            href={lang === "it" ? "/contatti" : `/${lang}/${lang === "en" ? "contact" : lang === "es" ? "contacto" : "kontakt"}`}
             className="inline-flex items-center justify-center border border-white/50 text-white font-medium py-3.5 px-8 rounded-full text-base hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
           >
             {t(h.prenotaCta, lang)}
