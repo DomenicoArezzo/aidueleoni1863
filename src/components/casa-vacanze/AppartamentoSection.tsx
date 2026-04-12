@@ -6,6 +6,7 @@ import { translations, t } from "@/lib/translations";
 import SectionBlock from "./ui/SectionBlock";
 import ContentCard from "./ui/ContentCard";
 import { Heading, BodyText, SectionHeader } from "./ui/Typography";
+import PhotoGallery from "./PhotoGallery";
 
 const AppartamentoSection = () => {
   const lang = useLang();
@@ -28,6 +29,7 @@ const AppartamentoSection = () => {
   return (
     <SectionBlock id="appartamento" bg="white">
       <SectionHeader title={t(a.title, lang)} subtitle={t(a.description, lang)} />
+      <PhotoGallery />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
         {caratteristiche.map((item, index) => (
