@@ -19,7 +19,7 @@ export const translations = {
     subtitleAccent: { it: "Eleganza, comfort e autenticità siciliana.", en: "Elegance, comfort and Sicilian authenticity.", es: "Elegancia, confort y autenticidad siciliana.", de: "Eleganz, Komfort und sizilianische Authentizität." },
     camere: { it: "3 Camere", en: "3 Bedrooms", es: "3 Habitaciones", de: "3 Schlafzimmer" },
     ospiti: { it: "Fino a 6 ospiti", en: "Up to 6 guests", es: "Hasta 6 huéspedes", de: "Bis zu 6 Gäste" },
-    location: { it: "Ragusa, Sicilia", en: "Ragusa, Sicily", es: "Ragusa, Sicilia", de: "Ragusa, Sizilien" },
+    location: { it: "Comiso, Sicilia", en: "Comiso, Sicily", es: "Comiso, Sicilia", de: "Comiso, Sizilien" },
     scopri: { it: "Scopri la struttura", en: "Discover the property", es: "Descubre la propiedad", de: "Unterkunft entdecken" },
     prenotaCta: { it: "Prenota il tuo soggiorno", en: "Book your stay", es: "Reserva tu estancia", de: "Aufenthalt buchen" },
     videoAlt: { it: "Video panoramico della zona di Ragusa e della Sicilia orientale", en: "Panoramic video of the Ragusa area and eastern Sicily", es: "Video panorámico de la zona de Ragusa y el este de Sicilia", de: "Panoramavideo der Gegend um Ragusa und Ostsizilien" },
