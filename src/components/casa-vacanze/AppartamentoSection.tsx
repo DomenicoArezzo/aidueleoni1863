@@ -6,6 +6,7 @@ import { translations, t } from "@/lib/translations";
 import SectionBlock from "./ui/SectionBlock";
 import ContentCard from "./ui/ContentCard";
 import { Heading, BodyText, SectionHeader } from "./ui/Typography";
+import PhotoGallery from "./PhotoGallery";
 
 const AppartamentoSection = () => {
   const lang = useLang();
