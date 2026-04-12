@@ -36,7 +36,7 @@ const DovetroviamoSection = () => {
                 <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
                 <div>
                   <span className="font-semibold text-foreground block">{t(d.indirizzo, lang)}</span>
-                  <BodyText muted>Via delle Medaglie d'Oro, Ragusa (RG)</BodyText>
+                  <BodyText muted>Contrada Castiglione snc, 97013 Comiso (RG)</BodyText>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -118,7 +118,7 @@ const DovetroviamoSection = () => {
           <ContentCard variant="elevated" padding="md">
             <Heading as="h4" className="mb-4">{t(d.coordinate, lang)}</Heading>
             <div className="bg-muted rounded-lg p-4 font-mono text-center">
-              <span className="text-foreground font-semibold">36.9281° N, 14.7351° E</span>
+              <span className="text-foreground font-semibold">36.9469° N, 14.6044° E</span>
             </div>
             <BodyText size="caption" muted className="mt-3 text-center">{t(d.coordinateHint, lang)}</BodyText>
           </ContentCard>

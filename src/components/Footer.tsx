@@ -30,9 +30,9 @@ const Footer = () => {
           <div>
             <h4 className="text-white text-sm font-semibold uppercase tracking-wider mb-4">{t(n.contatti, lang)}</h4>
             <div className="space-y-2 text-sm">
-              <p>Via delle Medaglie d'Oro, Ragusa (RG)</p>
+              <p>Contrada Castiglione snc, 97013 Comiso (RG)</p>
               <p>info@aidueleonisicilia.com</p>
-              <p>+39 XXX XXX XXXX</p>
+              <a href="tel:+393280534920" className="block hover:text-white transition-colors">+39 328 053 4920</a>
             </div>
           </div>
         </div>
