@@ -38,10 +38,7 @@ const AdminLogin = () => {
         if (error) throw error;
 
         // Check if user has admin role
-        const { data: roleData } = await supabase.rpc("has_role", {
-          _user_id: data.user.id,
-          _role: "admin",
-        });
+        const { data: roleData } = await supabase.rpc("is_admin");
 
         if (!roleData) {
           await supabase.auth.signOut();
