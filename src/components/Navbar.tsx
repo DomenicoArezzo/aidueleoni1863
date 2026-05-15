@@ -37,6 +37,7 @@ const Navbar = () => {
       ],
     },
     { label: t(n.doveSiamo, lang), path: { it: "/dove-siamo", en: "/en/location", es: "/es/ubicacion", de: "/de/lage" } },
+    { label: t({ it: "Dintorni", en: "Surroundings", es: "Alrededores", de: "Umgebung" }, lang), path: { it: "/dintorni", en: "/en/surroundings", es: "/es/alrededores", de: "/de/umgebung" } },
     { label: t(n.contatti, lang), path: { it: "/contatti", en: "/en/contact", es: "/es/contacto", de: "/de/kontakt" } },
   ];
 

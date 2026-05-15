@@ -36,6 +36,7 @@ const SidebarNav = () => {
         ],
       },
       { label: t(n.doveSiamo, lang), path: { it: "/dove-siamo", en: "/en/location", es: "/es/ubicacion", de: "/de/lage" } },
+      { label: t({ it: "Dintorni", en: "Surroundings", es: "Alrededores", de: "Umgebung" }, lang), path: { it: "/dintorni", en: "/en/surroundings", es: "/es/alrededores", de: "/de/umgebung" } },
       {
         label: t({ it: "Disponibilità", en: "Availability", es: "Disponibilidad", de: "Verfügbarkeit" }, lang),
         path: { it: "/disponibilita", en: "/en/availability", es: "/es/disponibilidad", de: "/de/verfuegbarkeit" },
