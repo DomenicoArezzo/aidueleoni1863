@@ -9,6 +9,7 @@ import ChiSiamoPage from "./pages/ChiSiamoPage";
 import DoveSiamoPage from "./pages/DoveSiamoPage";
 import ContattiPage from "./pages/ContattiPage";
 import DisponibilitaPage from "./pages/DisponibilitaPage";
+import DintorniPage from "./pages/DintorniPage";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
@@ -47,6 +48,10 @@ const App = () => (
           <Route path="/en/availability" element={<DisponibilitaPage lang="en" />} />
           <Route path="/es/disponibilidad" element={<DisponibilitaPage lang="es" />} />
           <Route path="/de/verfuegbarkeit" element={<DisponibilitaPage lang="de" />} />
+          <Route path="/dintorni" element={<DintorniPage lang="it" />} />
+          <Route path="/en/surroundings" element={<DintorniPage lang="en" />} />
+          <Route path="/es/alrededores" element={<DintorniPage lang="es" />} />
+          <Route path="/de/umgebung" element={<DintorniPage lang="de" />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/pulse-robot" element={<Index />} />
