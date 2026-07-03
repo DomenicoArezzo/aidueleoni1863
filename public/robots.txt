@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aidueleoni1863.lovable.app/sitemap.xml

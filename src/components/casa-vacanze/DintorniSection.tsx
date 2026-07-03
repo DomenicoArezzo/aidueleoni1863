@@ -94,6 +94,7 @@ const DintorniSection = () => {
   return (
     <SectionBlock id="dintorni" bg="white">
       <SectionHeader
+        as="h1"
         title="Cosa visitare nei dintorni"
         subtitle="Dalla campagna ragusana al mare cristallino, un viaggio nel cuore della Sicilia barocca: borghi UNESCO, castelli, spiagge e tradizioni autentiche a pochi minuti da Ai Due Leoni 1863."
       />

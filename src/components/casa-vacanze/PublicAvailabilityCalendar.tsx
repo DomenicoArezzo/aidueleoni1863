@@ -119,9 +119,9 @@ const PublicAvailabilityCalendar = () => {
             <CalendarDays className="w-4 h-4" />
             {t(tr.title, lang)}
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2 font-display">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2 font-display">
             {t(tr.title, lang)}
-          </h2>
+          </h1>
           <p className="text-base text-muted-foreground max-w-xl mx-auto">
             {t(tr.subtitle, lang)}
           </p>
