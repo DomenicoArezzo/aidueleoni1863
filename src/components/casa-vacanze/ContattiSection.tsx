@@ -10,9 +10,9 @@ import ActionButton from "./ui/ActionButton";
 import { Heading, BodyText, SectionHeader } from "./ui/Typography";
 
 const GOOGLE_MAPS_EMBED_URL =
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3178.5!2d14.6044!3d36.9469!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDU2JzQ5LjAiTiAxNMKwMzYnMTUuOCJF!5e0!3m2!1sit!2sit!4v1700000000000";
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3179.856!2d14.5968!3d36.9340!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x131de1b8d9e9e9e9%3A0x0!2sAi%20Due%20Leoni%201863!5e0!3m2!1sit!2sit!4v1625000000000";
 const GOOGLE_MAPS_DIRECTIONS_URL =
-  "https://www.google.com/maps/dir/?api=1&destination=36.9469,14.6044&travelmode=driving";
+  "https://www.google.com/maps/dir/?api=1&destination=Ai+Due+Leoni+1863,Contrada+Castiglione+snc,97100+Comiso,Ragusa&travelmode=driving";
 
 const ContattiSection = () => {
   const lang = useLang();
@@ -98,7 +98,7 @@ const ContattiSection = () => {
                 { icon: Mail, label: t(c.email, lang), value: "info@aidueleonisicilia.com", href: "mailto:info@aidueleonisicilia.com" },
                 { icon: MessageCircle, label: "WhatsApp", value: "+39 328 053 4920", href: "https://wa.me/393280534920" },
               ].map(({ icon: Icon, label, value, href }, i) => (
-                <a key={i} href={href} target={href?.startsWith("http") ? "_blank" : undefined} rel={href?.startsWith("http") ? "noopener noreferrer" : undefined} className="flex items-center gap-4 group">
+                <a key={i} href={href} target={href?.startsWith("http") ? "_blank" : undefined} rel={href?.startsWith("http") ? "noopener noreferrer" : undefined} className="flex items-center gap-4 group transition-transform hover:translate-x-1">
                   <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
                     <Icon className="w-6 h-6 text-primary" />
                   </div>
@@ -117,10 +117,10 @@ const ContattiSection = () => {
                 <MapPin className="w-5 h-5 text-primary" />
                 <Heading as="h4">{t(c.comeRaggiungerci, lang)}</Heading>
               </div>
-              <BodyText size="caption" muted>Contrada Castiglione snc, 97013 Comiso (RG)</BodyText>
+              <BodyText size="caption" muted>Contrada Castiglione snc, 97100 Comiso (RG)</BodyText>
             </div>
             <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-              <iframe src={GOOGLE_MAPS_EMBED_URL} className="absolute inset-0 w-full h-full border-0" allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title={t(c.mapTitle, lang)} />
+              <iframe src={GOOGLE_MAPS_EMBED_URL} className="absolute inset-0 w-full h-full border-0" allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Posizione Ai Due Leoni"></iframe>
             </div>
             <div className="p-5 flex flex-col sm:flex-row gap-3">
               <a href={GOOGLE_MAPS_DIRECTIONS_URL} target="_blank" rel="noopener noreferrer" className="flex-1">
@@ -129,7 +129,7 @@ const ContattiSection = () => {
                   {t(c.ottieniIndicazioni, lang)}
                 </ActionButton>
               </a>
-              <a href="https://www.google.com/maps/place/36.9469,14.6044" target="_blank" rel="noopener noreferrer" className="flex-1">
+              <a href="https://www.google.com/maps/place/Ai+Due+Leoni+1863,Contrada+Castiglione+snc,97100+Comiso,Ragusa" target="_blank" rel="noopener noreferrer" className="flex-1">
                 <ActionButton variant="secondary" size="md" fullWidth className="gap-2">
                   <ExternalLink className="w-4 h-4" />
                   {t(c.apriMaps, lang)}
