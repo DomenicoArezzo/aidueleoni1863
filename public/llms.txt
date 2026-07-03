@@ -1,0 +1,21 @@
+# Ai due leoni 1863
+
+> Casa vacanze di lusso a Comiso (Ragusa), Sicilia — 3 camere, 2 bagni, fino a 6 ospiti.
+
+Ai due leoni 1863 è una casa vacanze indipendente nella campagna ragusana, a pochi minuti dall'aeroporto di Comiso, dalle spiagge iblee e dai borghi barocchi del Val di Noto. Prenotazione tramite preventivo personalizzato via WhatsApp o telefono.
+
+## Pages
+
+- [Home](/): panoramica della casa vacanze e prenotazione
+- [L'appartamento](/appartamento): camere, bagni, servizi e caratteristiche
+- [Chi siamo](/chi-siamo): storia della famiglia e della casa
+- [Dove siamo](/dove-siamo): posizione, indirizzo e come arrivare
+- [Disponibilità](/disponibilita): calendario disponibilità aggiornato
+- [Cosa visitare nei dintorni](/dintorni): guida a Marina di Ragusa, Donnafugata, Scicli, Ragusa Ibla, Comiso
+- [Contatti](/contatti): telefono, WhatsApp, email e richiesta preventivo
+
+## Optional
+
+- [English](/en) — English version
+- [Español](/es) — versión en español
+- [Deutsch](/de) — deutsche Version
