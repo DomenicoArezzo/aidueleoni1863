@@ -55,11 +55,12 @@ interface SectionHeaderProps {
   title: string;
   subtitle?: string;
   className?: string;
+  as?: HeadingLevel;
 }
 
-export const SectionHeader = ({ title, subtitle, className }: SectionHeaderProps) => (
+export const SectionHeader = ({ title, subtitle, className, as = "h2" }: SectionHeaderProps) => (
   <div className={cn("text-center mb-12", className)}>
-    <Heading as="h2">{title}</Heading>
+    <Heading as={as}>{title}</Heading>
     {subtitle && (
       <BodyText size="lead" muted maxWidth className="mx-auto mt-4">
         {subtitle}
