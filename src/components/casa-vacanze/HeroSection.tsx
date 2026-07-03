@@ -81,6 +81,7 @@ const HeroSection = () => {
           }}
         >
           Ai due leoni
+          <span className="sr-only"> — Casa vacanze a Comiso, Ragusa, Sicilia</span>
         </h1>
 
         {/* Subtitle — softer, with hierarchy */}
