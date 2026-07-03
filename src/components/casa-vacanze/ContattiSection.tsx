@@ -41,7 +41,7 @@ const ContattiSection = () => {
 
   return (
     <SectionBlock id="contatti" bg="muted">
-      <SectionHeader title={t(c.title, lang)} subtitle={t(c.subtitle, lang)} />
+      <SectionHeader as="h1" title={t(c.title, lang)} subtitle={t(c.subtitle, lang)} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <ContentCard variant="elevated" padding="lg">

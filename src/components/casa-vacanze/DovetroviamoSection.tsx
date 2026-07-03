@@ -22,7 +22,7 @@ const DovetroviamoSection = () => {
 
   return (
     <SectionBlock id="dove-ci-troviamo" bg="white">
-      <SectionHeader title={t(d.title, lang)} subtitle={t(d.subtitle, lang)} />
+      <SectionHeader as="h1" title={t(d.title, lang)} subtitle={t(d.subtitle, lang)} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
         <div>
