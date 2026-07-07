@@ -116,8 +116,8 @@ const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
-        <button onClick={goHome} className={cn("flex items-center gap-2 transition-colors duration-300", logoColor)} aria-label="Ai due leoni">
-          <span className="text-xl sm:text-2xl font-light tracking-wide" style={{ fontFamily: "'Georgia', serif" }}>Ai due leoni</span>
+        <button onClick={goHome} className={cn("flex items-center gap-2 transition-colors duration-300", logoColor)} aria-label="Ai due leoni 1863">
+          <span className="text-xl sm:text-2xl font-light tracking-wide" style={{ fontFamily: "'Georgia', serif" }}>Ai due leoni 1863</span>
         </button>
 
         <nav className="hidden md:flex items-center gap-1">
