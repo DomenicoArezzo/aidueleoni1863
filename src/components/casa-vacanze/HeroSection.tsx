@@ -55,7 +55,6 @@ const HeroSection = () => {
         src="/castiglione.mp4"
         aria-label={t(h.videoAlt, lang)}
       />
-
       {/* Multi-layer gradient overlay for maximum readability */}
       <div className="absolute inset-0 bg-black/35" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/25" />
