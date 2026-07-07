@@ -42,7 +42,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-end pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative min-h-screen flex items-center px-5 sm:px-8 lg:px-12 overflow-hidden"
     >
       {/* Video background with slow zoom */}
       <video
@@ -57,8 +57,9 @@ const HeroSection = () => {
       />
 
       {/* Multi-layer gradient overlay for maximum readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-black/35" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/15 to-transparent" />
 
       {/* Content */}
       <div ref={contentRef} className="relative z-10 max-w-5xl mx-auto w-full">
@@ -72,30 +73,92 @@ const HeroSection = () => {
         </p>
 
         {/* Main title — luxury serif, very prominent */}
-        <h1
-          data-animate
-          className="text-5xl sm:text-6xl lg:text-8xl xl:text-9xl font-normal text-white mb-4 sm:mb-5 leading-[0.95] tracking-[-0.02em]"
-          style={{
-            fontFamily: "'Playfair Display', 'Georgia', serif",
-            textShadow: "0 2px 30px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)",
-          }}
-        >
-          Ai due leoni 
-          <br />
-          1863
-          <span className="sr-only"> — Casa vacanze a Comiso, Ragusa, Sicilia</span>
-        </h1>
+       <h1
+  data-animate
+  className="
+    text-6xl
+    sm:text-7xl
+    lg:text-[8rem]
+    xl:text-[9rem]
+    font-normal
+    text-white
+    leading-[0.9]
+    tracking-[-0.04em]
+    mb-6
+  "
+  style={{
+    fontFamily: "'Playfair Display', serif",
+    textShadow:
+      "0 4px 35px rgba(0,0,0,.45), 0 2px 10px rgba(0,0,0,.35)",
+  }}
+>
+  Ai due leoni
+
+  <span
+    className="
+      block
+      text-3xl
+      sm:text-4xl
+      lg:text-5xl
+      mt-2
+      tracking-[0.35em]
+      text-white/85
+      uppercase
+      font-light
+    "
+  >
+    1863
+  </span>
+
+  <span className="sr-only">
+    Casa vacanze a Comiso, Ragusa, Sicilia
+  </span>
+</h1>
+
 
         {/* Subtitle — softer, with hierarchy */}
-        <p
-          data-animate
-          className="text-base sm:text-lg lg:text-xl text-white/70 font-light mb-8 sm:mb-10 max-w-xl leading-[1.7] tracking-wide"
-          style={{ textShadow: "0 1px 6px rgba(0,0,0,0.4)" }}
-        >
-          {t(h.subtitle, lang)}
-          <br className="hidden sm:inline" />
-          <span className="text-white/50">{t(h.subtitleAccent, lang)}</span>
-        </p>
+       <h1
+  data-animate
+  className="
+    text-6xl
+    sm:text-7xl
+    lg:text-[8rem]
+    xl:text-[9rem]
+    font-normal
+    text-white
+    leading-[0.9]
+    tracking-[-0.04em]
+    mb-6
+  "
+  style={{
+    fontFamily: "'Playfair Display', serif",
+    textShadow:
+      "0 4px 35px rgba(0,0,0,.45), 0 2px 10px rgba(0,0,0,.35)",
+  }}
+>
+  Ai due leoni
+
+  <span
+    className="
+      block
+      text-3xl
+      sm:text-4xl
+      lg:text-5xl
+      mt-2
+      tracking-[0.35em]
+      text-white/85
+      uppercase
+      font-light
+    "
+  >
+    1863
+  </span>
+
+  <span className="sr-only">
+    Casa vacanze a Comiso, Ragusa, Sicilia
+  </span>
+</h1>
+`
 
         {/* Feature pills */}
         <div data-animate className="flex flex-wrap gap-2.5 sm:gap-3 mb-8 sm:mb-10">
@@ -106,7 +169,7 @@ const HeroSection = () => {
           ].map(({ icon: Icon, label }) => (
             <span
               key={label}
-              className="inline-flex items-center gap-2 bg-white/[0.08] backdrop-blur-lg border border-white/[0.12] text-white/90 text-xs sm:text-sm px-4 py-2 rounded-full transition-colors hover:bg-white/[0.14]"
+              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-lg border border-white/20 shadow-lg text-white px-5 py-3 rounded-full"
             >
               <Icon className="w-3.5 h-3.5 opacity-70" /> {label}
             </span>
@@ -117,25 +180,85 @@ const HeroSection = () => {
         <div data-animate className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <a
             href={lang === "it" ? "/appartamento" : `/${lang}/${lang === "en" ? "apartment" : lang === "es" ? "apartamento" : "wohnung"}`}
-            className="inline-flex items-center justify-center bg-primary text-primary-foreground font-semibold py-3.5 sm:py-4 px-8 sm:px-10 rounded-full text-sm sm:text-base hover:brightness-110 transition-all duration-300 shadow-[0_4px_20px_hsl(var(--primary)/0.4)]"
+           className="
+inline-flex
+items-center
+justify-center
+bg-primary
+text-primary-foreground
+font-semibold
+py-4
+px-10
+rounded-full
+hover:scale-105
+hover:brightness-110
+transition-all
+duration-300
+shadow-[0_10px_30px_hsl(var(--primary)/0.45)]
+"
+
           >
             {t(h.scopri, lang)}
           </a>
           <a
             href={lang === "it" ? "/contatti" : `/${lang}/${lang === "en" ? "contact" : lang === "es" ? "contacto" : "kontakt"}`}
-            className="inline-flex items-center justify-center border border-white/40 text-white font-medium py-3.5 sm:py-4 px-8 sm:px-10 rounded-full text-sm sm:text-base hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
+            className="
+inline-flex
+items-center
+justify-center
+border
+border-white/30
+bg-white/5
+backdrop-blur-md
+text-white
+font-medium
+py-4
+px-10
+rounded-full
+hover:bg-white/10
+transition-all
+duration-300
+"
+`
           >
             {t(h.prenotaCta, lang)}
           </a>
           <a
             href="tel:+393280534920"
-            className="inline-flex items-center justify-center gap-2 text-white/60 hover:text-white font-medium py-3.5 sm:py-4 px-6 rounded-full text-sm transition-all duration-300 sm:ml-1"
+            className="
+inline-flex
+items-center
+gap-2
+text-white/75
+hover:text-white
+transition-all
+duration-300
+"
           >
             <Phone className="w-4 h-4" />
             <span className="hidden sm:inline">+39 328 053 4920</span>
           </a>
         </div>
       </div>
+    <div
+  className="
+  absolute
+  bottom-8
+  left-1/2
+  -translate-x-1/2
+  hidden
+  lg:flex
+  flex-col
+  items-center
+  text-white/55
+  "
+>
+  <span className="text-xs tracking-[0.3em] uppercase mb-3">
+    Scroll
+  </span>
+
+  <div className="w-[1px] h-10 bg-white/40 animate-pulse" />
+</div>
     </section>
   );
 };
