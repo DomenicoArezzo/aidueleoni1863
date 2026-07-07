@@ -80,7 +80,7 @@ const HeroSection = () => {
             textShadow: "0 2px 30px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)",
           }}
         >
-          Ai due leoni
+          Ai due leoni 1863
           <span className="sr-only"> — Casa vacanze a Comiso, Ragusa, Sicilia</span>
         </h1>
 
