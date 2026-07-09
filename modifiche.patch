@@ -1,0 +1,1169 @@
+diff --git a/.env b/.env
+deleted file mode 100644
+index e339d95..0000000
+--- a/.env
++++ /dev/null
+@@ -1,3 +0,0 @@
+-VITE_SUPABASE_PROJECT_ID="jiwxyktxirxbuxreenzn"
+-VITE_SUPABASE_PUBLISHABLE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imppd3h5a3R4aXJ4YnV4cmVlbnpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MDgxNjYsImV4cCI6MjA5MTA4NDE2Nn0.SdxYVLLFh3nKz52dNbv6j1c3Mt1nI_Uvh724rftvOyU"
+-VITE_SUPABASE_URL="https://jiwxyktxirxbuxreenzn.supabase.co"
+diff --git a/.env.example b/.env.example
+new file mode 100644
+index 0000000..31ff7ba
+--- /dev/null
++++ b/.env.example
+@@ -0,0 +1,3 @@
++VITE_SUPABASE_PROJECT_ID=YOUR_VALUE_HERE
++VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_VALUE_HERE
++VITE_SUPABASE_URL=YOUR_VALUE_HERE
+diff --git a/.gitignore b/.gitignore
+index a547bf3..f794a2b 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -12,6 +12,11 @@ dist
+ dist-ssr
+ *.local
+ 
++# Environment variables (never commit secrets/config)
++.env
++.env.*
++!.env.example
++
+ # Editor directories and files
+ .vscode/*
+ !.vscode/extensions.json
+diff --git a/package.json b/package.json
+index 19bb180..120f5de 100644
+--- a/package.json
++++ b/package.json
+@@ -70,6 +70,8 @@
+     "@types/node": "^22.5.5",
+     "@types/react": "^18.3.3",
+     "@types/react-dom": "^18.3.0",
++    "@typescript-eslint/eslint-plugin": "^8.63.0",
++    "@typescript-eslint/parser": "^8.63.0",
+     "@vitejs/plugin-react-swc": "^3.5.0",
+     "autoprefixer": "^10.4.20",
+     "eslint": "^9.9.0",
+@@ -80,7 +82,7 @@
+     "postcss": "^8.4.47",
+     "tailwindcss": "^3.4.11",
+     "typescript": "^5.5.3",
+-    "typescript-eslint": "^8.0.1",
++    "typescript-eslint": "^8.63.0",
+     "vite": "^5.4.1"
+   }
+ }
+diff --git a/public/castiglione-poster.jpg b/public/castiglione-poster.jpg
+new file mode 100644
+index 0000000..10639f6
+Binary files /dev/null and b/public/castiglione-poster.jpg differ
+diff --git a/src/App.tsx b/src/App.tsx
+index 42c0105..5f5fdf6 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,63 +1,81 @@
++import { Suspense, lazy } from "react";
+ import { Toaster } from "@/components/ui/toaster";
+ import { Toaster as Sonner } from "@/components/ui/sonner";
+ import { TooltipProvider } from "@/components/ui/tooltip";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import { BrowserRouter, Routes, Route } from "react-router-dom";
+-import CasaVacanze from "./pages/CasaVacanze";
+-import AppartamentoPage from "./pages/AppartamentoPage";
+-import ChiSiamoPage from "./pages/ChiSiamoPage";
+-import DoveSiamoPage from "./pages/DoveSiamoPage";
+-import ContattiPage from "./pages/ContattiPage";
+-import DisponibilitaPage from "./pages/DisponibilitaPage";
+-import DintorniPage from "./pages/DintorniPage";
+-import Index from "./pages/Index";
+-import NotFound from "./pages/NotFound";
+-import AdminLogin from "./pages/AdminLogin";
+-import AdminDashboard from "./pages/AdminDashboard";
++
++// Route-level code splitting: each page is loaded on demand instead of being
++// bundled into the single ~1.25MB main chunk. This reduces the initial
++// JavaScript payload and improves Core Web Vitals (LCP/TBT) on first visit.
++const CasaVacanze = lazy(() => import("./pages/CasaVacanze"));
++const AppartamentoPage = lazy(() => import("./pages/AppartamentoPage"));
++const ChiSiamoPage = lazy(() => import("./pages/ChiSiamoPage"));
++const DoveSiamoPage = lazy(() => import("./pages/DoveSiamoPage"));
++const ContattiPage = lazy(() => import("./pages/ContattiPage"));
++const DisponibilitaPage = lazy(() => import("./pages/DisponibilitaPage"));
++const DintorniPage = lazy(() => import("./pages/DintorniPage"));
++const Index = lazy(() => import("./pages/Index"));
++const NotFound = lazy(() => import("./pages/NotFound"));
++const AdminLogin = lazy(() => import("./pages/AdminLogin"));
++const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+ 
+ const queryClient = new QueryClient();
+ 
++const PageFallback = () => (
++  <div
++    className="min-h-screen flex items-center justify-center"
++    role="status"
++    aria-live="polite"
++  >
++    <span className="sr-only">Caricamento in corso…</span>
++    <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
++  </div>
++);
++
+ const App = () => (
+   <QueryClientProvider client={queryClient}>
+     <TooltipProvider>
+       <Toaster />
+       <Sonner />
+       <BrowserRouter>
+-        <Routes>
+-          <Route path="/" element={<CasaVacanze lang="it" />} />
+-          <Route path="/en" element={<CasaVacanze lang="en" />} />
+-          <Route path="/es" element={<CasaVacanze lang="es" />} />
+-          <Route path="/de" element={<CasaVacanze lang="de" />} />
+-          <Route path="/appartamento" element={<AppartamentoPage lang="it" />} />
+-          <Route path="/en/apartment" element={<AppartamentoPage lang="en" />} />
+-          <Route path="/es/apartamento" element={<AppartamentoPage lang="es" />} />
+-          <Route path="/de/wohnung" element={<AppartamentoPage lang="de" />} />
+-          <Route path="/chi-siamo" element={<ChiSiamoPage lang="it" />} />
+-          <Route path="/en/about" element={<ChiSiamoPage lang="en" />} />
+-          <Route path="/es/quienes-somos" element={<ChiSiamoPage lang="es" />} />
+-          <Route path="/de/ueber-uns" element={<ChiSiamoPage lang="de" />} />
+-          <Route path="/dove-siamo" element={<DoveSiamoPage lang="it" />} />
+-          <Route path="/en/location" element={<DoveSiamoPage lang="en" />} />
+-          <Route path="/es/ubicacion" element={<DoveSiamoPage lang="es" />} />
+-          <Route path="/de/lage" element={<DoveSiamoPage lang="de" />} />
+-          <Route path="/contatti" element={<ContattiPage lang="it" />} />
+-          <Route path="/en/contact" element={<ContattiPage lang="en" />} />
+-          <Route path="/es/contacto" element={<ContattiPage lang="es" />} />
+-          <Route path="/de/kontakt" element={<ContattiPage lang="de" />} />
+-          <Route path="/disponibilita" element={<DisponibilitaPage lang="it" />} />
+-          <Route path="/en/availability" element={<DisponibilitaPage lang="en" />} />
+-          <Route path="/es/disponibilidad" element={<DisponibilitaPage lang="es" />} />
+-          <Route path="/de/verfuegbarkeit" element={<DisponibilitaPage lang="de" />} />
+-          <Route path="/dintorni" element={<DintorniPage lang="it" />} />
+-          <Route path="/en/surroundings" element={<DintorniPage lang="en" />} />
+-          <Route path="/es/alrededores" element={<DintorniPage lang="es" />} />
+-          <Route path="/de/umgebung" element={<DintorniPage lang="de" />} />
+-          <Route path="/admin" element={<AdminLogin />} />
+-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+-          <Route path="/pulse-robot" element={<Index />} />
+-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+-          <Route path="*" element={<NotFound />} />
+-        </Routes>
++        <Suspense fallback={<PageFallback />}>
++          <Routes>
++            <Route path="/" element={<CasaVacanze lang="it" />} />
++            <Route path="/en" element={<CasaVacanze lang="en" />} />
++            <Route path="/es" element={<CasaVacanze lang="es" />} />
++            <Route path="/de" element={<CasaVacanze lang="de" />} />
++            <Route path="/appartamento" element={<AppartamentoPage lang="it" />} />
++            <Route path="/en/apartment" element={<AppartamentoPage lang="en" />} />
++            <Route path="/es/apartamento" element={<AppartamentoPage lang="es" />} />
++            <Route path="/de/wohnung" element={<AppartamentoPage lang="de" />} />
++            <Route path="/chi-siamo" element={<ChiSiamoPage lang="it" />} />
++            <Route path="/en/about" element={<ChiSiamoPage lang="en" />} />
++            <Route path="/es/quienes-somos" element={<ChiSiamoPage lang="es" />} />
++            <Route path="/de/ueber-uns" element={<ChiSiamoPage lang="de" />} />
++            <Route path="/dove-siamo" element={<DoveSiamoPage lang="it" />} />
++            <Route path="/en/location" element={<DoveSiamoPage lang="en" />} />
++            <Route path="/es/ubicacion" element={<DoveSiamoPage lang="es" />} />
++            <Route path="/de/lage" element={<DoveSiamoPage lang="de" />} />
++            <Route path="/contatti" element={<ContattiPage lang="it" />} />
++            <Route path="/en/contact" element={<ContattiPage lang="en" />} />
++            <Route path="/es/contacto" element={<ContattiPage lang="es" />} />
++            <Route path="/de/kontakt" element={<ContattiPage lang="de" />} />
++            <Route path="/disponibilita" element={<DisponibilitaPage lang="it" />} />
++            <Route path="/en/availability" element={<DisponibilitaPage lang="en" />} />
++            <Route path="/es/disponibilidad" element={<DisponibilitaPage lang="es" />} />
++            <Route path="/de/verfuegbarkeit" element={<DisponibilitaPage lang="de" />} />
++            <Route path="/dintorni" element={<DintorniPage lang="it" />} />
++            <Route path="/en/surroundings" element={<DintorniPage lang="en" />} />
++            <Route path="/es/alrededores" element={<DintorniPage lang="es" />} />
++            <Route path="/de/umgebung" element={<DintorniPage lang="de" />} />
++            <Route path="/admin" element={<AdminLogin />} />
++            <Route path="/admin/dashboard" element={<AdminDashboard />} />
++            <Route path="/pulse-robot" element={<Index />} />
++            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
++            <Route path="*" element={<NotFound />} />
++          </Routes>
++        </Suspense>
+       </BrowserRouter>
+     </TooltipProvider>
+   </QueryClientProvider>
+diff --git a/src/assets/appartamento/camera1.webp b/src/assets/appartamento/camera1.webp
+new file mode 100644
+index 0000000..393e1db
+Binary files /dev/null and b/src/assets/appartamento/camera1.webp differ
+diff --git a/src/assets/appartamento/camera2.webp b/src/assets/appartamento/camera2.webp
+new file mode 100644
+index 0000000..65d9c19
+Binary files /dev/null and b/src/assets/appartamento/camera2.webp differ
+diff --git a/src/assets/appartamento/camera3.webp b/src/assets/appartamento/camera3.webp
+new file mode 100644
+index 0000000..8f43d22
+Binary files /dev/null and b/src/assets/appartamento/camera3.webp differ
+diff --git a/src/assets/appartamento/camera4.webp b/src/assets/appartamento/camera4.webp
+new file mode 100644
+index 0000000..c6c0a15
+Binary files /dev/null and b/src/assets/appartamento/camera4.webp differ
+diff --git a/src/components/Hero.tsx b/src/components/Hero.tsx
+index 9b16390..c5e3767 100644
+--- a/src/components/Hero.tsx
++++ b/src/components/Hero.tsx
+@@ -7,7 +7,7 @@ import LottieAnimation from "./LottieAnimation";
+ const Hero = () => {
+   const containerRef = useRef<HTMLDivElement>(null);
+   const imageRef = useRef<HTMLImageElement>(null);
+-  const [lottieData, setLottieData] = useState<any>(null);
++  const [lottieData, setLottieData] = useState<Record<string, unknown> | null>(null);
+   const [isMobile, setIsMobile] = useState(false);
+ 
+   useEffect(() => {
+@@ -152,7 +152,7 @@ const Hero = () => {
+             {lottieData ? (
+               <div className="relative z-10 animate-fade-in" style={{ animationDelay: "0.9s" }}>
+                 <LottieAnimation 
+-                  animationPath={lottieData} 
++                  animationData={lottieData}
+                   className="w-full h-auto max-w-lg mx-auto"
+                   loop={true}
+                   autoplay={true}
+diff --git a/src/components/LottieAnimation.tsx b/src/components/LottieAnimation.tsx
+index c738609..03e6739 100644
+--- a/src/components/LottieAnimation.tsx
++++ b/src/components/LottieAnimation.tsx
+@@ -3,14 +3,14 @@ import React from "react";
+ import Lottie from "lottie-react";
+ 
+ interface LottieAnimationProps {
+-  animationPath: string;
++  animationData: Record<string, unknown>;
+   className?: string;
+   loop?: boolean;
+   autoplay?: boolean;
+ }
+ 
+ const LottieAnimation = ({
+-  animationPath,
++  animationData,
+   className = "",
+   loop = true,
+   autoplay = true,
+@@ -18,7 +18,7 @@ const LottieAnimation = ({
+   return (
+     <div className={className}>
+       <Lottie
+-        animationData={animationPath}
++        animationData={animationData}
+         loop={loop}
+         autoplay={autoplay}
+         style={{ width: "100%", height: "100%" }}
+diff --git a/src/components/Navbar.tsx b/src/components/Navbar.tsx
+index d7b17b8..30f4ee6 100644
+--- a/src/components/Navbar.tsx
++++ b/src/components/Navbar.tsx
+@@ -48,6 +48,8 @@ const Navbar = () => {
+   const [langOpen, setLangOpen] = useState(false);
+   const dropdownTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+   const langTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
++  const menuButtonRef = useRef<HTMLButtonElement>(null);
++  const mobilePanelRef = useRef<HTMLDivElement>(null);
+ 
+   useEffect(() => {
+     const handleScroll = () => setIsScrolled(window.scrollY > 10);
+@@ -55,16 +57,44 @@ const Navbar = () => {
+     return () => window.removeEventListener("scroll", handleScroll);
+   }, []);
+ 
++  // Ensure body scroll is always restored, even if the component unmounts
++  // (e.g. route change) while the mobile menu is open. Without this cleanup
++  // the page could get permanently stuck with overflow:hidden.
++  useEffect(() => {
++    return () => {
++      document.body.style.overflow = "";
++    };
++  }, []);
++
++  // Close menus with Escape, and move focus into the mobile panel when it
++  // opens so keyboard/screen-reader users aren't left behind on the trigger.
++  useEffect(() => {
++    if (!isMenuOpen) return;
++
++    const firstLink = mobilePanelRef.current?.querySelector<HTMLElement>("button, a");
++    firstLink?.focus();
++
++    const handleKeyDown = (e: KeyboardEvent) => {
++      if (e.key === "Escape") closeMenu();
++    };
++    document.addEventListener("keydown", handleKeyDown);
++    return () => document.removeEventListener("keydown", handleKeyDown);
++  }, [isMenuOpen]);
++
+   const toggleMenu = () => {
+-    setIsMenuOpen(!isMenuOpen);
++    setIsMenuOpen((open) => {
++      const next = !open;
++      document.body.style.overflow = next ? "hidden" : "";
++      return next;
++    });
+     setMobileExpanded(null);
+-    document.body.style.overflow = !isMenuOpen ? "hidden" : "";
+   };
+ 
+   const closeMenu = () => {
+     setIsMenuOpen(false);
+     setMobileExpanded(null);
+     document.body.style.overflow = "";
++    menuButtonRef.current?.focus();
+   };
+ 
+   const goTo = (path: Record<Lang, string>) => {
+@@ -85,6 +115,9 @@ const Navbar = () => {
+   const handleDropdownLeave = () => {
+     dropdownTimeout.current = setTimeout(() => setOpenDropdown(null), 150);
+   };
++  const toggleDropdown = (label: string) => {
++    setOpenDropdown((current) => (current === label ? null : label));
++  };
+ 
+   const handleLangEnter = () => {
+     if (langTimeout.current) clearTimeout(langTimeout.current);
+@@ -116,24 +149,42 @@ const Navbar = () => {
+       )}
+     >
+       <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
+-        <button onClick={goHome} className={cn("flex items-center gap-2 transition-colors duration-300", logoColor)} aria-label="Ai due leoni 1863">
++        <button onClick={goHome} className={cn("flex items-center gap-2 transition-colors duration-300", logoColor)} aria-label="Ai due leoni 1863 — torna alla home">
+           <span className="text-xl sm:text-2xl font-light tracking-wide" style={{ fontFamily: "'Georgia', serif" }}>Ai due leoni 1863</span>
+         </button>
+ 
+-        <nav className="hidden md:flex items-center gap-1">
++        <nav className="hidden md:flex items-center gap-1" aria-label="Menu principale">
+           {navItems.map((item) =>
+             item.children ? (
+-              <div key={item.label} className="relative" onMouseEnter={() => handleDropdownEnter(item.label)} onMouseLeave={handleDropdownLeave}>
+-                <button className={cn("flex items-center gap-1 px-4 py-2 text-sm tracking-wide transition-colors duration-300 rounded-md", textColor, hoverColor)}>
++              <div
++                key={item.label}
++                className="relative"
++                onMouseEnter={() => handleDropdownEnter(item.label)}
++                onMouseLeave={handleDropdownLeave}
++              >
++                <button
++                  className={cn("flex items-center gap-1 px-4 py-2 text-sm tracking-wide transition-colors duration-300 rounded-md", textColor, hoverColor)}
++                  aria-haspopup="true"
++                  aria-expanded={openDropdown === item.label}
++                  onClick={() => toggleDropdown(item.label)}
++                  onFocus={() => handleDropdownEnter(item.label)}
++                >
+                   {item.label}
+                   <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", openDropdown === item.label && "rotate-180")} />
+                 </button>
+                 <div
+                   className={cn("absolute top-full left-0 mt-1 min-w-[220px] bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-200 origin-top", openDropdown === item.label ? "opacity-100 scale-y-100 pointer-events-auto" : "opacity-0 scale-y-95 pointer-events-none")}
+-                  onMouseEnter={() => handleDropdownEnter(item.label)} onMouseLeave={handleDropdownLeave}
++                  onMouseEnter={() => handleDropdownEnter(item.label)}
++                  onMouseLeave={handleDropdownLeave}
+                 >
+                   {item.children.map((child) => (
+-                    <button key={child.path.it} onClick={() => goTo(child.path)} className={cn("w-full text-left px-5 py-3.5 hover:bg-amber-50 transition-colors duration-200 group", isActive(child.path) && "bg-amber-50")}>
++                    <button
++                      key={child.path.it}
++                      onClick={() => goTo(child.path)}
++                      onFocus={() => handleDropdownEnter(item.label)}
++                      onBlur={handleDropdownLeave}
++                      className={cn("w-full text-left px-5 py-3.5 hover:bg-amber-50 transition-colors duration-200 group", isActive(child.path) && "bg-amber-50")}
++                    >
+                       <span className={cn("block text-sm font-medium transition-colors", isActive(child.path) ? "text-amber-700" : "text-gray-900 group-hover:text-amber-700")}>{child.label}</span>
+                       {child.description && <span className="block text-xs text-gray-400 mt-0.5">{child.description}</span>}
+                     </button>
+@@ -149,15 +200,24 @@ const Navbar = () => {
+ 
+           {/* Language Switcher */}
+           <div className="relative ml-2" onMouseEnter={handleLangEnter} onMouseLeave={handleLangLeave}>
+-            <button className={cn("flex items-center gap-1.5 px-3 py-2 text-sm rounded-md transition-colors duration-300", textColor, hoverColor)}>
++            <button
++              className={cn("flex items-center gap-1.5 px-3 py-2 text-sm rounded-md transition-colors duration-300", textColor, hoverColor)}
++              aria-haspopup="true"
++              aria-expanded={langOpen}
++              aria-label={`Lingua: ${langLabels[lang]}`}
++              onClick={() => setLangOpen((open) => !open)}
++              onFocus={handleLangEnter}
++            >
+               <Globe className="w-4 h-4" />
+               <span className="uppercase text-xs font-medium">{lang}</span>
+             </button>
+-            <div className={cn("absolute top-full right-0 mt-1 min-w-[140px] bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-200 origin-top", langOpen ? "opacity-100 scale-y-100 pointer-events-auto" : "opacity-0 scale-y-95 pointer-events-none")}
+-              onMouseEnter={handleLangEnter} onMouseLeave={handleLangLeave}
++            <div
++              className={cn("absolute top-full right-0 mt-1 min-w-[140px] bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-200 origin-top", langOpen ? "opacity-100 scale-y-100 pointer-events-auto" : "opacity-0 scale-y-95 pointer-events-none")}
++              onMouseEnter={handleLangEnter}
++              onMouseLeave={handleLangLeave}
+             >
+               {(Object.keys(langLabels) as Lang[]).map((l) => (
+-                <button key={l} onClick={() => switchLang(l)} className={cn("w-full text-left px-4 py-2.5 text-sm transition-colors", l === lang ? "bg-amber-50 text-amber-700 font-medium" : "text-gray-700 hover:bg-gray-50")}>
++                <button key={l} onClick={() => switchLang(l)} onFocus={handleLangEnter} onBlur={handleLangLeave} className={cn("w-full text-left px-4 py-2.5 text-sm transition-colors", l === lang ? "bg-amber-50 text-amber-700 font-medium" : "text-gray-700 hover:bg-gray-50")}>
+                   {langLabels[l]}
+                 </button>
+               ))}
+@@ -169,24 +229,43 @@ const Navbar = () => {
+           </button>
+         </nav>
+ 
+-        <button className={cn("md:hidden p-2 transition-colors", iconColor)} onClick={toggleMenu} aria-label={isMenuOpen ? "Close menu" : "Open menu"}>
++        <button
++          ref={menuButtonRef}
++          className={cn("md:hidden p-2.5 -m-0.5 transition-colors", iconColor)}
++          onClick={toggleMenu}
++          aria-label={isMenuOpen ? "Chiudi il menu" : "Apri il menu"}
++          aria-expanded={isMenuOpen}
++          aria-controls="mobile-nav-panel"
++        >
+           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+         </button>
+       </div>
+ 
+       {/* Mobile Navigation */}
+-      <div className={cn("fixed inset-0 z-40 bg-white flex flex-col pt-20 px-6 md:hidden transition-all duration-300 ease-in-out", isMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none")}>
+-        <nav className="flex flex-col space-y-1">
++      <div
++        id="mobile-nav-panel"
++        ref={mobilePanelRef}
++        role="dialog"
++        aria-modal="true"
++        aria-label="Menu di navigazione"
++        aria-hidden={!isMenuOpen}
++        className={cn("fixed inset-0 z-40 bg-white flex flex-col pt-20 px-6 md:hidden transition-all duration-300 ease-in-out", isMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none")}
++      >
++        <nav className="flex flex-col space-y-1" aria-label="Menu principale (mobile)">
+           {navItems.map((item) =>
+             item.children ? (
+               <div key={item.label}>
+-                <button onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)} className="flex items-center justify-between w-full text-lg font-light py-4 px-4 rounded-lg hover:bg-gray-50 transition-colors">
++                <button
++                  onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
++                  className="flex items-center justify-between w-full text-lg font-light py-4 px-4 rounded-lg hover:bg-gray-50 transition-colors min-h-[44px]"
++                  aria-expanded={mobileExpanded === item.label}
++                >
+                   {item.label}
+                   <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform duration-200", mobileExpanded === item.label && "rotate-180")} />
+                 </button>
+                 <div className={cn("overflow-hidden transition-all duration-200", mobileExpanded === item.label ? "max-h-96" : "max-h-0")}>
+                   {item.children.map((child) => (
+-                    <button key={child.path.it} onClick={() => goTo(child.path)} className={cn("w-full text-left pl-8 pr-4 py-3 text-base rounded-lg transition-colors", isActive(child.path) ? "text-amber-700 bg-amber-50 font-medium" : "text-gray-600 hover:text-amber-700 hover:bg-amber-50")}>
++                    <button key={child.path.it} onClick={() => goTo(child.path)} className={cn("w-full text-left pl-8 pr-4 py-3 text-base rounded-lg transition-colors min-h-[44px]", isActive(child.path) ? "text-amber-700 bg-amber-50 font-medium" : "text-gray-600 hover:text-amber-700 hover:bg-amber-50")}>
+                       {child.label}
+                       {child.description && <span className="block text-xs text-gray-400 mt-0.5">{child.description}</span>}
+                     </button>
+@@ -194,7 +273,7 @@ const Navbar = () => {
+                 </div>
+               </div>
+             ) : (
+-              <button key={item.label} onClick={() => item.path ? goTo(item.path) : goHome()} className={cn("text-lg font-light py-4 px-4 w-full text-left rounded-lg hover:bg-gray-50 transition-colors", isActive(item.path) && "text-amber-700 font-medium")}>
++              <button key={item.label} onClick={() => item.path ? goTo(item.path) : goHome()} className={cn("text-lg font-light py-4 px-4 w-full text-left rounded-lg hover:bg-gray-50 transition-colors min-h-[44px]", isActive(item.path) && "text-amber-700 font-medium")}>
+                 {item.label}
+               </button>
+             )
+@@ -204,7 +283,7 @@ const Navbar = () => {
+           <div className="border-t border-gray-100 pt-4 mt-4">
+             <div className="flex gap-2 px-4">
+               {(Object.keys(langLabels) as Lang[]).map((l) => (
+-                <button key={l} onClick={() => switchLang(l)} className={cn("flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors", l === lang ? "bg-amber-100 text-amber-700" : "bg-gray-50 text-gray-600 hover:bg-gray-100")}>
++                <button key={l} onClick={() => switchLang(l)} className={cn("flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors min-h-[44px]", l === lang ? "bg-amber-100 text-amber-700" : "bg-gray-50 text-gray-600 hover:bg-gray-100")}>
+                   {langLabels[l]}
+                 </button>
+               ))}
+@@ -213,7 +292,7 @@ const Navbar = () => {
+         </nav>
+ 
+         <div className="mt-auto pb-8">
+-          <button onClick={() => goTo({ it: "/contatti", en: "/en/contact", es: "/es/contacto", de: "/de/kontakt" })} className="w-full py-4 bg-amber-600 text-white font-medium rounded-full text-lg hover:bg-amber-700 transition-colors">
++          <button onClick={() => goTo({ it: "/contatti", en: "/en/contact", es: "/es/contacto", de: "/de/kontakt" })} className="w-full py-4 bg-amber-600 text-white font-medium rounded-full text-lg hover:bg-amber-700 transition-colors min-h-[44px]">
+             {t(n.prenotaSoggiorno, lang)}
+           </button>
+         </div>
+diff --git a/src/components/PageHead.tsx b/src/components/PageHead.tsx
+index 20f3462..7f94faa 100644
+--- a/src/components/PageHead.tsx
++++ b/src/components/PageHead.tsx
+@@ -1,6 +1,7 @@
+ import React from "react";
+ import { Helmet } from "react-helmet-async";
+ import { useLocation } from "react-router-dom";
++import type { Lang } from "@/lib/translations";
+ 
+ const SITE = "https://aidueleoni1863.lovable.app";
+ 
+@@ -9,16 +10,29 @@ interface PageHeadProps {
+   description: string;
+   image?: string;
+   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
++  /** Current page language, used to set <html lang> and og:locale correctly. */
++  lang?: Lang;
++  /** Map of language -> absolute path, used to emit hreflang alternate links
++   *  so search engines serve the right language version to each visitor
++   *  (important for reaching international/slow-travel tourists). */
++  alternates?: Partial<Record<Lang, string>>;
+ }
+ 
+-const PageHead = ({ title, description, image, jsonLd }: PageHeadProps) => {
++const OG_LOCALE: Record<Lang, string> = {
++  it: "it_IT",
++  en: "en_US",
++  es: "es_ES",
++  de: "de_DE",
++};
++
++const PageHead = ({ title, description, image, jsonLd, lang = "it", alternates }: PageHeadProps) => {
+   const { pathname } = useLocation();
+   const url = `${SITE}${pathname === "/" ? "/" : pathname.replace(/\/$/, "")}`;
+   const img = image || `${SITE}/og-image-update.png`;
+   const ldArray = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+ 
+   return (
+-    <Helmet>
++    <Helmet htmlAttributes={{ lang }}>
+       <title>{title}</title>
+       <meta name="description" content={description} />
+       <link rel="canonical" href={url} />
+@@ -26,9 +40,22 @@ const PageHead = ({ title, description, image, jsonLd }: PageHeadProps) => {
+       <meta property="og:description" content={description} />
+       <meta property="og:url" content={url} />
+       <meta property="og:image" content={img} />
++      <meta property="og:locale" content={OG_LOCALE[lang]} />
+       <meta name="twitter:title" content={title} />
+       <meta name="twitter:description" content={description} />
+       <meta name="twitter:image" content={img} />
++      {alternates &&
++        Object.entries(alternates).map(([hreflang, path]) => (
++          <link
++            key={hreflang}
++            rel="alternate"
++            hrefLang={hreflang}
++            href={`${SITE}${path}`}
++          />
++        ))}
++      {alternates && alternates.it && (
++        <link rel="alternate" hrefLang="x-default" href={`${SITE}${alternates.it}`} />
++      )}
+       {ldArray.map((ld, i) => (
+         <script key={i} type="application/ld+json">
+           {JSON.stringify(ld)}
+diff --git a/src/components/admin/AdminBookings.tsx b/src/components/admin/AdminBookings.tsx
+index ac89799..ce0cf35 100644
+--- a/src/components/admin/AdminBookings.tsx
++++ b/src/components/admin/AdminBookings.tsx
+@@ -10,12 +10,20 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from
+ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+ import { useToast } from "@/hooks/use-toast";
+ import { Plus, Trash2, Edit } from "lucide-react";
++import type { Database } from "@/integrations/supabase/types";
++
++type Booking = Database["public"]["Tables"]["bookings"]["Row"];
++type BookingStatus = Database["public"]["Enums"]["booking_status"];
+ 
+ const AdminBookings = () => {
+-  const [bookings, setBookings] = useState<any[]>([]);
++  const [bookings, setBookings] = useState<Booking[]>([]);
+   const [propertyId, setPropertyId] = useState("");
+   const [dialogOpen, setDialogOpen] = useState(false);
+-  const [form, setForm] = useState({
++  const [form, setForm] = useState<{
++    guest_name: string; guest_email: string; guest_phone: string;
++    check_in: string; check_out: string; num_guests: number; notes: string;
++    status: BookingStatus;
++  }>({
+     guest_name: "", guest_email: "", guest_phone: "",
+     check_in: "", check_out: "", num_guests: 1, notes: "", status: "confirmed",
+   });
+@@ -37,7 +45,7 @@ const AdminBookings = () => {
+     const { error } = await supabase.from("bookings").insert({
+       property_id: propertyId,
+       source: "manual" as const,
+-      status: form.status as any,
++      status: form.status,
+       guest_name: form.guest_name || null,
+       guest_email: form.guest_email || null,
+       guest_phone: form.guest_phone || null,
+@@ -63,7 +71,7 @@ const AdminBookings = () => {
+   };
+ 
+   const cancelBooking = async (id: string) => {
+-    await supabase.from("bookings").update({ status: "cancelled" as any }).eq("id", id);
++    await supabase.from("bookings").update({ status: "cancelled" as BookingStatus }).eq("id", id);
+     toast({ title: "Prenotazione annullata" });
+     loadData();
+   };
+@@ -114,7 +122,7 @@ const AdminBookings = () => {
+                 <div><Label>Ospiti</Label><Input type="number" min={1} max={6} value={form.num_guests} onChange={(e) => setForm({ ...form, num_guests: parseInt(e.target.value) || 1 })} /></div>
+                 <div>
+                   <Label>Stato</Label>
+-                  <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
++                  <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v as BookingStatus })}>
+                     <SelectTrigger><SelectValue /></SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="confirmed">Confermata</SelectItem>
+diff --git a/src/components/admin/AdminCalendar.tsx b/src/components/admin/AdminCalendar.tsx
+index 4093fed..0b1e459 100644
+--- a/src/components/admin/AdminCalendar.tsx
++++ b/src/components/admin/AdminCalendar.tsx
+@@ -1,4 +1,4 @@
+-import React, { useEffect, useState } from "react";
++import React, { useCallback, useEffect, useState } from "react";
+ import { supabase } from "@/integrations/supabase/client";
+ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+ import { Button } from "@/components/ui/button";
+@@ -8,6 +8,7 @@ import { Calendar } from "@/components/ui/calendar";
+ import { useToast } from "@/hooks/use-toast";
+ import { Plus, Trash2 } from "lucide-react";
+ import type { DateRange } from "react-day-picker";
++import type { Database } from "@/integrations/supabase/types";
+ 
+ interface UnavailableDate {
+   date_start: string;
+@@ -16,27 +17,17 @@ interface UnavailableDate {
+   source: string;
+ }
+ 
++type AvailabilityBlock = Database["public"]["Tables"]["availability_blocks"]["Row"];
++
+ const AdminCalendar = () => {
+   const [propertyId, setPropertyId] = useState<string>("");
+   const [unavailable, setUnavailable] = useState<UnavailableDate[]>([]);
+-  const [blocks, setBlocks] = useState<any[]>([]);
++  const [blocks, setBlocks] = useState<AvailabilityBlock[]>([]);
+   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>();
+   const [blockReason, setBlockReason] = useState("");
+   const { toast } = useToast();
+ 
+-  useEffect(() => {
+-    loadProperty();
+-  }, []);
+-
+-  const loadProperty = async () => {
+-    const { data } = await supabase.from("properties").select("id").eq("slug", "ai-due-leoni").single();
+-    if (data) {
+-      setPropertyId(data.id);
+-      loadData(data.id);
+-    }
+-  };
+-
+-  const loadData = async (pid: string) => {
++  const loadData = useCallback(async (pid: string) => {
+     const { data: dates } = await supabase.rpc("get_unavailable_dates", { _property_id: pid });
+     if (dates) setUnavailable(dates);
+ 
+@@ -47,7 +38,19 @@ const AdminCalendar = () => {
+       .gte("end_date", new Date().toISOString().split("T")[0])
+       .order("start_date");
+     if (blockData) setBlocks(blockData);
+-  };
++  }, []);
++
++  const loadProperty = useCallback(async () => {
++    const { data } = await supabase.from("properties").select("id").eq("slug", "ai-due-leoni").single();
++    if (data) {
++      setPropertyId(data.id);
++      loadData(data.id);
++    }
++  }, [loadData]);
++
++  useEffect(() => {
++    loadProperty();
++  }, [loadProperty]);
+ 
+   const addBlock = async () => {
+     if (!selectedRange?.from || !propertyId) return;
+diff --git a/src/components/admin/AdminFeeds.tsx b/src/components/admin/AdminFeeds.tsx
+index 3f2b253..0c9fe77 100644
+--- a/src/components/admin/AdminFeeds.tsx
++++ b/src/components/admin/AdminFeeds.tsx
+@@ -7,11 +7,17 @@ import { Label } from "@/components/ui/label";
+ import { useToast } from "@/hooks/use-toast";
+ import { Plus, Trash2, RefreshCw, ExternalLink } from "lucide-react";
+ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
++import type { Database } from "@/integrations/supabase/types";
++
++type IcalFeed = Database["public"]["Tables"]["ical_feeds"]["Row"];
++type BookingSource = Database["public"]["Enums"]["booking_source"];
+ 
+ const AdminFeeds = () => {
+-  const [feeds, setFeeds] = useState<any[]>([]);
++  const [feeds, setFeeds] = useState<IcalFeed[]>([]);
+   const [propertyId, setPropertyId] = useState("");
+-  const [newFeed, setNewFeed] = useState({ name: "", source: "booking_com", ical_url: "", poll_interval_minutes: 15 });
++  const [newFeed, setNewFeed] = useState<{ name: string; source: BookingSource; ical_url: string; poll_interval_minutes: number }>({
++    name: "", source: "booking_com", ical_url: "", poll_interval_minutes: 15,
++  });
+   const [syncing, setSyncing] = useState(false);
+   const { toast } = useToast();
+ 
+@@ -33,7 +39,7 @@ const AdminFeeds = () => {
+     const { error } = await supabase.from("ical_feeds").insert({
+       property_id: propertyId,
+       name: newFeed.name,
+-      source: newFeed.source as any,
++      source: newFeed.source,
+       ical_url: newFeed.ical_url,
+       poll_interval_minutes: newFeed.poll_interval_minutes,
+     });
+@@ -60,8 +66,9 @@ const AdminFeeds = () => {
+       if (error) throw error;
+       toast({ title: "Sincronizzazione completata", description: JSON.stringify(data?.results?.length || 0) + " feed sincronizzati" });
+       loadData();
+-    } catch (err: any) {
+-      toast({ title: "Errore sync", description: err.message, variant: "destructive" });
++    } catch (err) {
++      const message = err instanceof Error ? err.message : String(err);
++      toast({ title: "Errore sync", description: message, variant: "destructive" });
+     } finally {
+       setSyncing(false);
+     }
+@@ -93,7 +100,7 @@ const AdminFeeds = () => {
+             </div>
+             <div>
+               <Label>Piattaforma</Label>
+-              <Select value={newFeed.source} onValueChange={(v) => setNewFeed({ ...newFeed, source: v })}>
++              <Select value={newFeed.source} onValueChange={(v) => setNewFeed({ ...newFeed, source: v as BookingSource })}>
+                 <SelectTrigger><SelectValue /></SelectTrigger>
+                 <SelectContent>
+                   <SelectItem value="booking_com">Booking.com</SelectItem>
+diff --git a/src/components/admin/AdminSyncLogs.tsx b/src/components/admin/AdminSyncLogs.tsx
+index f77575a..94a66ac 100644
+--- a/src/components/admin/AdminSyncLogs.tsx
++++ b/src/components/admin/AdminSyncLogs.tsx
+@@ -3,9 +3,14 @@ import { supabase } from "@/integrations/supabase/client";
+ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+ import { Badge } from "@/components/ui/badge";
++import type { Database } from "@/integrations/supabase/types";
++
++type SyncLog = Database["public"]["Tables"]["sync_logs"]["Row"] & {
++  ical_feeds: { name: string } | null;
++};
+ 
+ const AdminSyncLogs = () => {
+-  const [logs, setLogs] = useState<any[]>([]);
++  const [logs, setLogs] = useState<SyncLog[]>([]);
+ 
+   useEffect(() => {
+     loadLogs();
+@@ -47,7 +52,7 @@ const AdminSyncLogs = () => {
+               {logs.map((log) => (
+                 <TableRow key={log.id}>
+                   <TableCell className="text-xs">{new Date(log.created_at).toLocaleString("it")}</TableCell>
+-                  <TableCell className="text-sm">{(log.ical_feeds as any)?.name || "—"}</TableCell>
++                  <TableCell className="text-sm">{log.ical_feeds?.name || "—"}</TableCell>
+                   <TableCell>
+                     <Badge variant={log.status === "success" ? "default" : "destructive"}>
+                       {log.status}
+diff --git a/src/components/casa-vacanze/HeroSection.tsx b/src/components/casa-vacanze/HeroSection.tsx
+index bf63ddd..0712aa6 100644
+--- a/src/components/casa-vacanze/HeroSection.tsx
++++ b/src/components/casa-vacanze/HeroSection.tsx
+@@ -11,15 +11,27 @@ const HeroSection = () => {
+   const contentRef = useRef<HTMLDivElement>(null);
+ 
+   useEffect(() => {
+-    // Subtle zoom on video
+     const video = videoRef.current;
+-    if (video) {
+-      video.style.transition = "transform 20s ease-out";
+-      const timeout = setTimeout(() => {
+-        video.style.transform = "scale(1.08)";
+-      }, 300);
+-      return () => clearTimeout(timeout);
++    if (!video) return;
++
++    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
++
++    if (prefersReducedMotion) {
++      // Respect the user's OS-level preference: show the poster frame as a
++      // static image instead of an auto-playing, looping video (WCAG 2.2.2 —
++      // content that moves/auto-updates and lasts more than 5s must be
++      // pausable; the simplest, safest option is not to start it at all).
++      video.pause();
++      video.removeAttribute("autoplay");
++      return;
+     }
++
++    // Subtle zoom on video
++    video.style.transition = "transform 20s ease-out";
++    const timeout = setTimeout(() => {
++      video.style.transform = "scale(1.08)";
++    }, 300);
++    return () => clearTimeout(timeout);
+   }, []);
+ 
+   useEffect(() => {
+@@ -44,13 +56,18 @@ const HeroSection = () => {
+       id="hero"
+       className="relative min-h-screen flex items-center px-5 sm:px-8 lg:px-12 overflow-hidden"
+     >
+-      {/* Video background with slow zoom */}
++      {/* Video background with slow zoom.
++          poster shows an actual frame of the courtyard instantly, so visitors
++          on slow mobile connections see the villa right away instead of a
++          blank/black area while the 1.5MB video downloads (better LCP). */}
+       <video
+         ref={videoRef}
+         autoPlay
+         muted
+         loop
+         playsInline
++        preload="auto"
++        poster="/castiglione-poster.jpg"
+         className="absolute inset-0 w-full h-full object-cover will-change-transform"
+         src="/castiglione.mp4"
+         aria-label={t(h.videoAlt, lang)}
+diff --git a/src/components/casa-vacanze/PhotoGallery.tsx b/src/components/casa-vacanze/PhotoGallery.tsx
+index deb5527..8a80aa3 100644
+--- a/src/components/casa-vacanze/PhotoGallery.tsx
++++ b/src/components/casa-vacanze/PhotoGallery.tsx
+@@ -8,12 +8,16 @@ import camera1 from "@/assets/appartamento/camera1.jpg";
+ import camera2 from "@/assets/appartamento/camera2.jpg";
+ import camera3 from "@/assets/appartamento/camera3.jpg";
+ import camera4 from "@/assets/appartamento/camera4.jpg";
++import camera1Webp from "@/assets/appartamento/camera1.webp";
++import camera2Webp from "@/assets/appartamento/camera2.webp";
++import camera3Webp from "@/assets/appartamento/camera3.webp";
++import camera4Webp from "@/assets/appartamento/camera4.webp";
+ 
+ const images = [
+-  { src: camera1, alt: "Camera da letto principale con parete in pietra" },
+-  { src: camera2, alt: "Camera con arco in pietra e balcone panoramico" },
+-  { src: camera3, alt: "Camera con vista e arredi d'epoca" },
+-  { src: camera4, alt: "Camera con balcone e muri in pietra naturale" },
++  { src: camera1, webp: camera1Webp, alt: "Camera da letto principale con parete in pietra" },
++  { src: camera2, webp: camera2Webp, alt: "Camera con arco in pietra e balcone panoramico" },
++  { src: camera3, webp: camera3Webp, alt: "Camera con vista e arredi d'epoca" },
++  { src: camera4, webp: camera4Webp, alt: "Camera con balcone e muri in pietra naturale" },
+ ];
+ 
+ const PhotoGallery = () => {
+@@ -48,12 +52,19 @@ const PhotoGallery = () => {
+           {images.map((img, i) => (
+             <div key={i} className="flex-[0_0_100%] min-w-0">
+               <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-[21/9]">
+-                <img
+-                  src={img.src}
+-                  alt={img.alt}
+-                  loading="lazy"
+-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+-                />
++                <picture>
++                  <source srcSet={img.webp} type="image/webp" />
++                  <img
++                    src={img.src}
++                    alt={img.alt}
++                    width={1600}
++                    height={1066}
++                    loading={i === 0 ? "eager" : "lazy"}
++                    fetchPriority={i === 0 ? "high" : "auto"}
++                    decoding="async"
++                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"
++                  />
++                </picture>
+               </div>
+             </div>
+           ))}
+diff --git a/src/components/ui/button.tsx b/src/components/ui/button.tsx
+index 14539ad..3c49ce0 100644
+--- a/src/components/ui/button.tsx
++++ b/src/components/ui/button.tsx
+@@ -1,29 +1,50 @@
+ import * as React from "react"
+ import { Slot } from "@radix-ui/react-slot"
++import { cva, type VariantProps } from "class-variance-authority"
++
+ import { cn } from "@/lib/utils"
+ 
+-const buttonVariants = ({ variant = "default" }: { variant?: string }) => {
+-  const variants: Record<string, string> = {
+-    default:
+-      "inline-flex items-center justify-center whitespace-nowrap rounded-md bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 text-sm font-medium transition-colors",
+-    outline:
+-      "inline-flex items-center justify-center whitespace-nowrap rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 text-sm font-medium transition-colors",
++const buttonVariants = cva(
++  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
++  {
++    variants: {
++      variant: {
++        default: "bg-primary text-primary-foreground hover:bg-primary/90",
++        destructive:
++          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
++        outline:
++          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
++        secondary:
++          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
++        ghost: "hover:bg-accent hover:text-accent-foreground",
++        link: "text-primary underline-offset-4 hover:underline",
++      },
++      size: {
++        default: "h-9 px-4 py-2",
++        sm: "h-8 rounded-md px-3 text-xs",
++        lg: "h-10 rounded-md px-8",
++        icon: "h-9 w-9 min-h-[44px] min-w-[44px] md:h-9 md:w-9 md:min-h-0 md:min-w-0",
++      },
++    },
++    defaultVariants: {
++      variant: "default",
++      size: "default",
++    },
+   }
+-  return variants[variant] || variants.default
+-}
++)
+ 
+ export interface ButtonProps
+-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
++  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
++    VariantProps<typeof buttonVariants> {
+   asChild?: boolean
+-  variant?: "default" | "outline"
+ }
+ 
+ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+-  ({ className, variant = "default", asChild = false, ...props }, ref) => {
++  ({ className, variant, size, asChild = false, ...props }, ref) => {
+     const Comp = asChild ? Slot : "button"
+     return (
+       <Comp
+-        className={cn(buttonVariants({ variant }), className)}
++        className={cn(buttonVariants({ variant, size, className }))}
+         ref={ref}
+         {...props}
+       />
+diff --git a/src/components/ui/command.tsx b/src/components/ui/command.tsx
+index 56a0979..69d63a4 100644
+--- a/src/components/ui/command.tsx
++++ b/src/components/ui/command.tsx
+@@ -21,7 +21,7 @@ const Command = React.forwardRef<
+ ))
+ Command.displayName = CommandPrimitive.displayName
+ 
+-interface CommandDialogProps extends DialogProps {}
++type CommandDialogProps = DialogProps
+ 
+ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
+   return (
+diff --git a/src/components/ui/textarea.tsx b/src/components/ui/textarea.tsx
+index 9f9a6dc..12c9136 100644
+--- a/src/components/ui/textarea.tsx
++++ b/src/components/ui/textarea.tsx
+@@ -2,8 +2,7 @@ import * as React from "react"
+ 
+ import { cn } from "@/lib/utils"
+ 
+-export interface TextareaProps
+-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
++export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>
+ 
+ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+   ({ className, ...props }, ref) => {
+diff --git a/src/pages/AdminLogin.tsx b/src/pages/AdminLogin.tsx
+index 5ed8238..8f8a2f2 100644
+--- a/src/pages/AdminLogin.tsx
++++ b/src/pages/AdminLogin.tsx
+@@ -12,7 +12,6 @@ const AdminLogin = () => {
+   const [email, setEmail] = useState("");
+   const [password, setPassword] = useState("");
+   const [loading, setLoading] = useState(false);
+-  const [isSignUp, setIsSignUp] = useState(false);
+   const navigate = useNavigate();
+   const { toast } = useToast();
+ 
+@@ -21,39 +20,26 @@ const AdminLogin = () => {
+     setLoading(true);
+ 
+     try {
+-      if (isSignUp) {
+-        // Sign up
+-        const { data, error } = await supabase.auth.signUp({ email, password });
+-        if (error) throw error;
+-        if (!data.user) throw new Error("Registrazione fallita");
++      const { error } = await supabase.auth.signInWithPassword({ email, password });
++      if (error) throw error;
+ 
+-        toast({ 
+-          title: "Account creato!", 
+-          description: "Ora accedi con le tue credenziali. Un amministratore dovrà abilitare il tuo accesso.",
+-        });
+-        setIsSignUp(false);
+-      } else {
+-        // Sign in
+-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+-        if (error) throw error;
+-
+-        // Check if user has admin role
+-        const { data: roleData } = await supabase.rpc("is_admin");
+-
+-        if (!roleData) {
+-          await supabase.auth.signOut();
+-          toast({ 
+-            title: "Accesso negato", 
+-            description: "Non hai i permessi di amministratore. Contatta un admin.",
+-            variant: "destructive",
+-          });
+-          return;
+-        }
++      // Check if user has admin role
++      const { data: roleData } = await supabase.rpc("is_admin");
+ 
+-        navigate("/admin/dashboard");
++      if (!roleData) {
++        await supabase.auth.signOut();
++        toast({
++          title: "Accesso negato",
++          description: "Non hai i permessi di amministratore. Contatta un admin.",
++          variant: "destructive",
++        });
++        return;
+       }
+-    } catch (err: any) {
+-      toast({ title: "Errore", description: err.message, variant: "destructive" });
++
++      navigate("/admin/dashboard");
++    } catch (err) {
++      const message = err instanceof Error ? err.message : String(err);
++      toast({ title: "Errore", description: message, variant: "destructive" });
+     } finally {
+       setLoading(false);
+     }
+@@ -67,33 +53,22 @@ const AdminLogin = () => {
+             <Lock className="w-6 h-6 text-primary" />
+           </div>
+           <CardTitle className="text-2xl font-display">Admin — Ai due leoni</CardTitle>
+-          <CardDescription>
+-            {isSignUp ? "Crea un nuovo account amministratore" : "Accedi alla dashboard"}
+-          </CardDescription>
++          <CardDescription>Accedi alla dashboard</CardDescription>
+         </CardHeader>
+         <CardContent>
+           <form onSubmit={handleSubmit} className="space-y-4">
+             <div>
+               <Label htmlFor="email">Email</Label>
+-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
++              <Input id="email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required />
+             </div>
+             <div>
+               <Label htmlFor="password">Password</Label>
+-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
++              <Input id="password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+             </div>
+             <Button type="submit" className="w-full" disabled={loading}>
+-              {loading ? "Caricamento..." : isSignUp ? "Registrati" : "Accedi"}
++              {loading ? "Caricamento..." : "Accedi"}
+             </Button>
+           </form>
+-          <div className="mt-4 text-center">
+-            <button
+-              type="button"
+-              onClick={() => setIsSignUp(!isSignUp)}
+-              className="text-sm text-primary hover:underline"
+-            >
+-              {isSignUp ? "Hai già un account? Accedi" : "Non hai un account? Registrati"}
+-            </button>
+-          </div>
+         </CardContent>
+       </Card>
+     </div>
+diff --git a/src/pages/CasaVacanze.tsx b/src/pages/CasaVacanze.tsx
+index 5595b9f..503cb8c 100644
+--- a/src/pages/CasaVacanze.tsx
++++ b/src/pages/CasaVacanze.tsx
+@@ -37,11 +37,18 @@ const HEAD: Record<Lang, { title: string; description: string }> = {
+   },
+ };
+ 
++const ALTERNATES: Partial<Record<Lang, string>> = {
++  it: "/",
++  en: "/en",
++  es: "/es",
++  de: "/de",
++};
++
+ const CasaVacanze = ({ lang = "it" }: CasaVacanzeProps) => {
+   const meta = HEAD[lang];
+   return (
+     <LangProvider lang={lang}>
+-      <PageHead title={meta.title} description={meta.description} />
++      <PageHead title={meta.title} description={meta.description} lang={lang} alternates={ALTERNATES} />
+       <div className="min-h-screen bg-white">
+         <Navbar />
+         <SidebarNav />
+diff --git a/supabase/functions/export-ical/index.ts b/supabase/functions/export-ical/index.ts
+index d78dd01..25ebbb1 100644
+--- a/supabase/functions/export-ical/index.ts
++++ b/supabase/functions/export-ical/index.ts
+@@ -49,7 +49,8 @@ Deno.serve(async (req) => {
+       ical += `UID:booking-${booking.id}@aidueleoni.com\r\n`;
+       ical += `DTSTART;VALUE=DATE:${formatICalDate(booking.check_in)}\r\n`;
+       ical += `DTEND;VALUE=DATE:${formatICalDate(booking.check_out)}\r\n`;
+-      ical += `SUMMARY:${booking.guest_name || "Prenotazione"}\r\n`;
++      // Never expose guest personal data (GDPR) in a publicly-shared calendar feed.
++      ical += `SUMMARY:Prenotazione\r\n`;
+       ical += `STATUS:CONFIRMED\r\n`;
+       ical += `END:VEVENT\r\n`;
+     }
+diff --git a/supabase/functions/sync-ical/index.ts b/supabase/functions/sync-ical/index.ts
+index a7d59aa..8ee2651 100644
+--- a/supabase/functions/sync-ical/index.ts
++++ b/supabase/functions/sync-ical/index.ts
+@@ -64,8 +64,37 @@ Deno.serve(async (req) => {
+     return new Response("ok", { headers: corsHeaders });
+   }
+ 
++  // This function writes to the database and calls third-party URLs, so it
++  // must never be callable by anonymous/public clients (verify_jwt=true only
++  // guarantees a valid Supabase JWT, which the public anon key also satisfies).
++  // Allow either: (a) the scheduled cron job, authenticated via a shared
++  // secret header, or (b) a logged-in admin user calling it from the
++  // dashboard "Sincronizza ora" button, authenticated via their own JWT.
++  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
++  const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
++  const cronSecret = Deno.env.get("SYNC_CRON_SECRET");
++  const providedSecret = req.headers.get("x-cron-secret");
++  const authHeader = req.headers.get("Authorization");
++
++  let isAuthorized = false;
++  if (cronSecret && providedSecret === cronSecret) {
++    isAuthorized = true;
++  } else if (authHeader) {
++    const callerClient = createClient(supabaseUrl, anonKey, {
++      global: { headers: { Authorization: authHeader } },
++    });
++    const { data: isAdmin } = await callerClient.rpc("is_admin");
++    isAuthorized = isAdmin === true;
++  }
++
++  if (!isAuthorized) {
++    return new Response(JSON.stringify({ error: "Unauthorized" }), {
++      status: 401,
++      headers: { ...corsHeaders, "Content-Type": "application/json" },
++    });
++  }
++
+   try {
+-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+     const supabase = createClient(supabaseUrl, serviceKey);
+ 
+diff --git a/tailwind.config.ts b/tailwind.config.ts
+index fec21e0..73bc815 100644
+--- a/tailwind.config.ts
++++ b/tailwind.config.ts
+@@ -1,5 +1,6 @@
+ 
+ import type { Config } from "tailwindcss";
++import tailwindcssAnimate from "tailwindcss-animate";
+ 
+ export default {
+ 	darkMode: ["class"],
+@@ -153,5 +154,5 @@ export default {
+ 			}
+ 		}
+ 	},
+-	plugins: [require("tailwindcss-animate")],
++	plugins: [tailwindcssAnimate],
+ } satisfies Config;
