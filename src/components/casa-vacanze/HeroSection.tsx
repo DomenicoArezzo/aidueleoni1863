@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { MapPin, Users, Bed, Phone } from "lucide-react";
 import { useLang } from "@/hooks/use-lang";
 import { translations, t } from "@/lib/translations";
@@ -8,6 +9,24 @@ const HeroSection = () => {
   const h = translations.hero;
   const videoRef = useRef<HTMLVideoElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const propertyLink =
+    lang === "it"
+      ? "/appartamento"
+      : lang === "en"
+        ? "/en/apartment"
+        : lang === "es"
+          ? "/es/apartamento"
+          : "/de/wohnung";
+
+  const contactLink =
+    lang === "it"
+      ? "/contatti"
+      : lang === "en"
+        ? "/en/contact"
+        : lang === "es"
+          ? "/es/contacto"
+          : "/de/kontakt";
 
   useEffect(() => {
     const video = videoRef.current;
@@ -121,12 +140,8 @@ const HeroSection = () => {
         </div>
 
         <div data-animate className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <a
-            href={
-              lang === "it"
-                ? "/appartamento"
-                : `/${lang}/${lang === "en" ? "apartment" : lang === "es" ? "apartamento" : "wohnung"}`
-            }
+          <Link
+            to={propertyLink}
             className="
               inline-flex
               items-center
@@ -145,13 +160,9 @@ const HeroSection = () => {
             "
           >
             {t(h.scopri, lang)}
-          </a>
-          <a
-            href={
-              lang === "it"
-                ? "/contatti"
-                : `/${lang}/${lang === "en" ? "contact" : lang === "es" ? "contacto" : "kontakt"}`
-            }
+          </Link>
+          <Link
+            to={contactLink}
             className="
               inline-flex
               items-center
@@ -171,7 +182,7 @@ const HeroSection = () => {
             "
           >
             {t(h.prenotaCta, lang)}
-          </a>
+          </Link>
           <a
             href="tel:+393280534920"
             className="
