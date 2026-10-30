@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import CasaVacanze from "./pages/CasaVacanze";
 import AppartamentoPage from "./pages/AppartamentoPage";
 import ChiSiamoPage from "./pages/ChiSiamoPage";
@@ -10,7 +10,6 @@ import DoveSiamoPage from "./pages/DoveSiamoPage";
 import ContattiPage from "./pages/ContattiPage";
 import DisponibilitaPage from "./pages/DisponibilitaPage";
 import DintorniPage from "./pages/DintorniPage";
-import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -54,8 +53,7 @@ const App = () => (
           <Route path="/de/umgebung" element={<DintorniPage lang="de" />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/pulse-robot" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/pulse-robot" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
